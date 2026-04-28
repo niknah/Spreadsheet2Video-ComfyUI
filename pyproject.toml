@@ -1,0 +1,20 @@
+[project]
+name = "Spreadsheet2Video-ComfyUI"
+version = "1.0.0"
+description = "Use a spreadsheet as input for ComfyUI execution"
+license = { file = "LICENSE" }
+dependencies = [
+]
+classifiers = [
+    "Operating System :: OS Independent"  # Works on all operating systems
+]
+dynamic = ["dependencies"]
+
+[project.urls]
+Repository = "https://github.com/niknah/Spreadsheet2Video-ComfyUI"
+Documentation = "https://niknah.github.com/Spreadsheet2Video-ComfyUI"
+"Bug Tracker" = "https://github.com/niknah/Spreadsheet2Video-ComfyUI/issues"
+
+[tool.comfy]
+PublisherId = "niknah"
+DisplayName = "Spreadsheet2Video"
