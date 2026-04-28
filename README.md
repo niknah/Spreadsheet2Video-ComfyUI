@@ -1,7 +1,9 @@
 
 Easy way to loop things in ComfyUI.
 
-[Nodes](https://niknah.github.io/Spreadsheet2Video/imgs/Spreadsheet2Video\_nodes.png)
+![Nodes](https://niknah.github.io/Spreadsheet2Video/imgs/Spreadsheet2Video\_nodes.png)
+
+
 
 
 ## Examples
@@ -14,7 +16,7 @@ Or in manager -> templates -> Spreadsheet2Video
 
 [Long video workflow](example_workflows/Spreadsheet2Video_ConcatVideo.json)
 
-https://niknah.github.io/Spreadsheet2Video/mp4/GolfBall.mp4
+[![Long video]](example_workflows/GolfBall.png)](https://niknah.github.io/Spreadsheet2Video/mp4/GolfBall.mp4)
 
 
 
