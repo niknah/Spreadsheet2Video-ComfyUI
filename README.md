@@ -47,12 +47,8 @@ Or in manager -> templates -> Spreadsheet2Video
 
 
 
-## Video Instructions
+[Video Instructions](https://www.youtube.com/watch?v=2c_Ass5-dg4)
 
-
-<div align="center">
-  <video src="https://www.youtube.com/watch?v=2c_Ass5-dg4" width="70%" poster=""> </video>
-</div>
 
 
 
@@ -63,10 +59,6 @@ Or in manager -> templates -> Spreadsheet2Video
 | Node | Description |
 | -- | -- |
 | Spreadsheet2Video | Use a start image or use EmptyImage node if you don't want to make a video |
-
-
-
-
 | Spreadsheet2Video Input Image | Give it a name. Link the columns to your workflow. |
 | Spreadsheet2Video Output Image | Put the output image here.  Link the image to the `Spreadsheet2Video Input Image` node if you have no image output.  |
 | Spreadsheet2Video Load Text | Optional.  Loads a file, link to spreadsheet when you want to use a .csv file instead of typing in the data.  Can put it into `input` or `input/csv` folders. |
