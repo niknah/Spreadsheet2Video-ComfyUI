@@ -1,7 +1,7 @@
 
 Easy way to loop things in ComfyUI.
 
-![Nodes](https://niknah.github.io/Spreadsheet2Video/imgs/Spreadsheet2Video\_nodes.png)
+![Nodes](docs/imgs/Spreadsheet2Video\_nodes.png)
 
 
 
@@ -16,7 +16,7 @@ Or in manager -> templates -> Spreadsheet2Video
 
 [Long video workflow](example_workflows/Spreadsheet2Video_ConcatVideo.json)
 
-[![Long video]](example_workflows/GolfBall.png)](https://niknah.github.io/Spreadsheet2Video/mp4/GolfBall.mp4)
+[![Long video](example_workflows/GolfBall.png)](https://niknah.github.io/Spreadsheet2Video-ComfyUI/mp4/GolfBall.mp4)
 
 
 
@@ -24,7 +24,8 @@ Or in manager -> templates -> Spreadsheet2Video
 
 * [Comparison video workflow](example_workflows/Spreadsheet2Video_Comparison.json)
 
-https://niknah.github.io/Spreadsheet2Video/mp4/Comparison.mp4
+
+<video src="https://niknah.github.io/Spreadsheet2Video-ComfyUI/mp4/Comparison.mp4" width="1024" controls></video>
 
 
 ### Deforum-like videos example
@@ -33,7 +34,8 @@ https://niknah.github.io/Spreadsheet2Video/mp4/Comparison.mp4
 * Copy and paste into a .csv file. [example .csv file](example_workflows/Cooking.csv)
 * [workflow](example_workflows/Spreadsheet2Video_deforum.json)
 
-https://niknah.github.io/Spreadsheet2Video/mp4/deforum.mp4
+
+[![deforum video](example_workflows/boiling_pot.png)](https://niknah.github.io/Spreadsheet2Video-ComfyUI/mp4/deforum.mp4)
 
 ### Non video
 
@@ -43,7 +45,8 @@ https://niknah.github.io/Spreadsheet2Video/mp4/deforum.mp4
 
 ## Instructions
 
-https://niknah.github.io/Spreadsheet2Video/mp4/Spreadsheet2Video\_Instructions.mp4
+
+<video src="https://niknah.github.io/Spreadsheet2Video-ComfyUI/mp4/Spreadsheet2Video_Instructions.mp4" width="1024" controls></video>
 
 ## Nodes
 
