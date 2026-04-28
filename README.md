@@ -1,8 +1,7 @@
 
-Easy way to loop things in ComfyUI.
+Use a spreadsheet as input for ComfyUI execution.
 
 ![Nodes](docs/imgs/Spreadsheet2Video\_nodes.png)
-
 
 
 
@@ -12,13 +11,29 @@ Easy way to loop things in ComfyUI.
 
 Or in manager -> templates -> Spreadsheet2Video
 
+
+## Instructions
+
+* Make a spreadsheet with the first column as the name of the part of the workflow you want to execute for that row. Put a header row in the spreadsheet.
+* Use the "Spreadsheet2Video Input Image" and "Spreadsheet2Video Output Image" nodes to specify which part of the workflow you want to execute.  You can have as many of these as you want but they must be separate, cannot depend on each other to run.
+* Link up an image to the main Spreadsheet2Video node
+* Row 1 will use the first image.  Row 2 will use the image output from Row 1.  If row 1 outputs a video, row 2 will get the last frame of video from row 1.
+
+Can be used for non-video, image workflows.  Use a blank image to start.  See the example workflow in the templates.
+
+[Video Instructions](https://www.youtube.com/watch?v=2c_Ass5-dg4)
+
+
 ### Long video
 
 [Long video workflow](example_workflows/Spreadsheet2Video_ConcatVideo.json)
 
+The video was made with the workflow and panning was done later in a video editor.
+
 <div align="center">
   <video src="https://github.com/user-attachments/assets/656c2f7e-081c-45e1-8e7d-dcef2ee018e2" width="70%" poster=""> </video>
 </div>
+
 
 
 ### Comparison video
@@ -26,7 +41,7 @@ Or in manager -> templates -> Spreadsheet2Video
 * [Comparison video workflow](example_workflows/Spreadsheet2Video_Comparison.json)
 
 <div align="center">
-  <video src="https://github.com/user-attachments/assets/65fc85b0-d24f-4f4e-9f52-6c23aa54d115" width="70%" poster=""> </video>
+  <video src="https://github.com/user-attachments/assets/65fc85b0-d24f-4f4e-9f52-6c23aa54d115" width="50%" poster=""> </video>
 </div>
 
 
@@ -37,7 +52,7 @@ Or in manager -> templates -> Spreadsheet2Video
 * [workflow](example_workflows/Spreadsheet2Video_deforum.json)
 
 <div align="center">
-  <video src="https://github.com/user-attachments/assets/c95a9386-ebfc-4830-955b-374493fbc69f" width="70%" poster=""> </video>
+  <video src="https://github.com/user-attachments/assets/c95a9386-ebfc-4830-955b-374493fbc69f" width="50%" poster=""> </video>
 </div>
 
 
@@ -47,7 +62,6 @@ Or in manager -> templates -> Spreadsheet2Video
 
 
 
-[Video Instructions](https://www.youtube.com/watch?v=2c_Ass5-dg4)
 
 
 
@@ -60,7 +74,7 @@ Or in manager -> templates -> Spreadsheet2Video
 | -- | -- |
 | Spreadsheet2Video | Use a start image or use EmptyImage node if you don't want to make a video |
 | Spreadsheet2Video Input Image | Give it a name. Link the columns to your workflow. |
-| Spreadsheet2Video Output Image | Put the output image here.  Link the image to the `Spreadsheet2Video Input Image` node if you have no image output.  |
+| Spreadsheet2Video Output Image | Put the output image here.  Link the image to the `Spreadsheet2Video Input Image` node if you have no image output.  The next row will use this image or the last frame if it is a video. |
 | Spreadsheet2Video Load Text | Optional.  Loads a file, link to spreadsheet when you want to use a .csv file instead of typing in the data.  Can put it into `input` or `input/csv` folders. |
 | Other nodes | Ignore them.  Used internally only |
 
