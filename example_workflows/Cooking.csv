@@ -1,0 +1,81 @@
+column1,number,x,y,width,height,rotate
+noisy_sample,boiling vegetables,28,28,456,456,-6.7032
+noisy_sample,boiling vegetables,45,45,422,422,-11.2812
+noisy_sample,boiling vegetables,48,48,416,416,-12.1912
+noisy_sample,boiling vegetables,49,49,414,414,-12.2724
+noisy_sample,boiling vegetables,49,49,414,414,-12.3144
+noisy_sample,boiling vegetables,49,49,414,414,-12.3494
+noisy_sample,boiling vegetables,49,49,414,414,-12.3984
+noisy_sample,boiling vegetables,49,49,414,414,-12.53
+noisy_sample,boiling vegetables,50,50,412,412,-12.6196
+noisy_sample,boiling vegetables,50,50,412,412,-12.7022
+noisy_sample,boiling vegetables,50,50,412,412,-12.7092
+noisy_sample,boiling vegetables,50,50,412,412,-12.7092
+noisy_sample,boiling vegetables,50,50,412,412,-12.7428
+noisy_sample,boiling vegetables,50,50,412,412,-12.7428
+noisy_sample,boiling vegetables,50,50,412,412,-12.7428
+noisy_sample,boiling vegetables,50,50,412,412,-12.7512
+noisy_sample,boiling vegetables,50,50,412,412,-12.7512
+noisy_sample,boiling vegetables,50,50,412,412,-12.7512
+noisy_sample,boiling vegetables,37,37,438,438,-8.953
+noisy_sample,Raw chicken drumsticks,28,28,456,456,6.6654
+noisy_sample,Raw chicken drumsticks,54,54,404,404,14
+noisy_sample,Raw chicken drumsticks,54,54,404,404,14
+noisy_sample,Raw chicken drumsticks,53,53,406,406,13.6668
+noisy_sample,Raw chicken drumsticks,53,53,406,406,13.6528
+noisy_sample,Raw chicken drumsticks,53,53,406,406,13.6528
+noisy_sample,Raw chicken drumsticks,53,53,406,406,13.6528
+noisy_sample,Raw chicken drumsticks,53,53,406,406,13.6528
+noisy_sample,Raw chicken drumsticks,53,53,406,406,13.6528
+noisy_sample,Raw chicken drumsticks,53,53,406,406,13.6528
+noisy_sample,Raw chicken drumsticks,53,53,406,406,13.6528
+noisy_sample,Raw chicken drumsticks,53,53,406,406,13.6528
+noisy_sample,Raw chicken drumsticks,53,53,406,406,13.6528
+noisy_sample,Raw chicken drumsticks,53,53,406,406,13.5114
+noisy_sample,Raw chicken drumsticks,52,52,408,408,13.1838
+noisy_sample,Raw chicken drumsticks,51,51,410,410,13.1096
+noisy_sample,Raw chicken drumsticks,51,51,410,410,13.1096
+noisy_sample,Raw chicken drumsticks,51,51,410,410,13.1096
+noisy_sample,Raw chicken drumsticks,51,51,410,410,13.0998
+noisy_sample,Raw chicken drumsticks,51,51,410,410,13.0998
+noisy_sample,Raw chicken drumsticks,51,51,410,410,13.0998
+noisy_sample,Spices on a plate,51,51,410,410,13.0998
+noisy_sample,Spices on a plate,42,52,398,408,13.2678
+noisy_sample,Spices on a plate,0,0,450,503,0
+noisy_sample,Spices on a plate,0,0,450,502,0
+noisy_sample,Spices on a plate,0,0,450,502,0
+noisy_sample,Spices on a plate,0,0,450,502,0
+noisy_sample,Spices on a plate,0,0,450,502,0
+noisy_sample,Spices on a plate,0,0,450,502,0
+noisy_sample,Spices on a plate,0,0,450,502,0
+noisy_sample,Spices on a plate,0,0,450,502,0
+noisy_sample,Spices on a plate,0,0,450,502,0
+noisy_sample,Spices on a plate,0,21,388,440,1.8802
+noisy_sample,Spices on a plate,0,19,390,443,0
+noisy_sample,Spices on a plate,0,10,411,464,0
+noisy_sample,Spices on a plate,0,8,414,467,0
+noisy_sample,Spices on a plate,0,7,418,471,0
+noisy_sample,Spices on a plate,0,7,418,472,0
+noisy_sample,Spices on a plate,0,7,418,472,0
+noisy_sample,Spices on a plate,0,8,418,472,0
+noisy_sample,Spices on a plate,0,8,418,472,0
+noisy_sample,"On the plate are several spicy chicken drumsticks, their skins coated in a glossy, reddish glaze with slightly charred edges. Beside them sits a mix of vegetables: green beans, sliced carrots, and pieces of capsicum and zucchini, lightly roasted and speckled with seasoning.",0,7,419,473,0
+noisy_sample,"On the plate are several spicy chicken drumsticks, their skins coated in a glossy, reddish glaze with slightly charred edges. Beside them sits a mix of vegetables: green beans, sliced carrots, and pieces of capsicum and zucchini, lightly roasted and speckled with seasoning.",0,7,420,474,0
+noisy_sample,"On the plate are several spicy chicken drumsticks, their skins coated in a glossy, reddish glaze with slightly charred edges. Beside them sits a mix of vegetables: green beans, sliced carrots, and pieces of capsicum and zucchini, lightly roasted and speckled with seasoning.",0,6,420,474,0
+noisy_sample,"On the plate are several spicy chicken drumsticks, their skins coated in a glossy, reddish glaze with slightly charred edges. Beside them sits a mix of vegetables: green beans, sliced carrots, and pieces of capsicum and zucchini, lightly roasted and speckled with seasoning.",0,6,420,474,0
+noisy_sample,"On the plate are several spicy chicken drumsticks, their skins coated in a glossy, reddish glaze with slightly charred edges. Beside them sits a mix of vegetables: green beans, sliced carrots, and pieces of capsicum and zucchini, lightly roasted and speckled with seasoning.",14,14,482,482,0
+noisy_sample,"On the plate are several spicy chicken drumsticks, their skins coated in a glossy, reddish glaze with slightly charred edges. Beside them sits a mix of vegetables: green beans, sliced carrots, and pieces of capsicum and zucchini, lightly roasted and speckled with seasoning.",66,8,512,476,0
+noisy_sample,"On the plate are several spicy chicken drumsticks, their skins coated in a glossy, reddish glaze with slightly charred edges. Beside them sits a mix of vegetables: green beans, sliced carrots, and pieces of capsicum and zucchini, lightly roasted and speckled with seasoning.",76,1,512,469,0
+noisy_sample,"On the plate are several spicy chicken drumsticks, their skins coated in a glossy, reddish glaze with slightly charred edges. Beside them sits a mix of vegetables: green beans, sliced carrots, and pieces of capsicum and zucchini, lightly roasted and speckled with seasoning.",76,1,512,469,0
+noisy_sample,"On the plate are several spicy chicken drumsticks, their skins coated in a glossy, reddish glaze with slightly charred edges. Beside them sits a mix of vegetables: green beans, sliced carrots, and pieces of capsicum and zucchini, lightly roasted and speckled with seasoning.",76,1,512,469,0
+noisy_sample,"On the plate are several spicy chicken drumsticks, their skins coated in a glossy, reddish glaze with slightly charred edges. Beside them sits a mix of vegetables: green beans, sliced carrots, and pieces of capsicum and zucchini, lightly roasted and speckled with seasoning.",76,1,512,469,0
+noisy_sample,"On the plate are several spicy chicken drumsticks, their skins coated in a glossy, reddish glaze with slightly charred edges. Beside them sits a mix of vegetables: green beans, sliced carrots, and pieces of capsicum and zucchini, lightly roasted and speckled with seasoning.",76,1,512,470,0
+noisy_sample,"On the plate are several spicy chicken drumsticks, their skins coated in a glossy, reddish glaze with slightly charred edges. Beside them sits a mix of vegetables: green beans, sliced carrots, and pieces of capsicum and zucchini, lightly roasted and speckled with seasoning.",76,1,512,470,0
+noisy_sample,"On the plate are several spicy chicken drumsticks, their skins coated in a glossy, reddish glaze with slightly charred edges. Beside them sits a mix of vegetables: green beans, sliced carrots, and pieces of capsicum and zucchini, lightly roasted and speckled with seasoning.",76,0,512,470,0
+noisy_sample,"On the plate are several spicy chicken drumsticks, their skins coated in a glossy, reddish glaze with slightly charred edges. Beside them sits a mix of vegetables: green beans, sliced carrots, and pieces of capsicum and zucchini, lightly roasted and speckled with seasoning.",76,0,512,470,0
+noisy_sample,"On the plate are several spicy chicken drumsticks, their skins coated in a glossy, reddish glaze with slightly charred edges. Beside them sits a mix of vegetables: green beans, sliced carrots, and pieces of capsicum and zucchini, lightly roasted and speckled with seasoning.",76,0,512,470,0
+noisy_sample,"On the plate are several spicy chicken drumsticks, their skins coated in a glossy, reddish glaze with slightly charred edges. Beside them sits a mix of vegetables: green beans, sliced carrots, and pieces of capsicum and zucchini, lightly roasted and speckled with seasoning.",76,0,512,470,0
+noisy_sample,"On the plate are several spicy chicken drumsticks, their skins coated in a glossy, reddish glaze with slightly charred edges. Beside them sits a mix of vegetables: green beans, sliced carrots, and pieces of capsicum and zucchini, lightly roasted and speckled with seasoning.",76,0,512,470,0
+noisy_sample,"On the plate are several spicy chicken drumsticks, their skins coated in a glossy, reddish glaze with slightly charred edges. Beside them sits a mix of vegetables: green beans, sliced carrots, and pieces of capsicum and zucchini, lightly roasted and speckled with seasoning.",0,0,512,512,0
+noisy_sample,"On the plate are several spicy chicken drumsticks, their skins coated in a glossy, reddish glaze with slightly charred edges. Beside them sits a mix of vegetables: green beans, sliced carrots, and pieces of capsicum and zucchini, lightly roasted and speckled with seasoning.",0,0,512,512,0
+noisy_sample,"On the plate are several spicy chicken drumsticks, their skins coated in a glossy, reddish glaze with slightly charred edges. Beside them sits a mix of vegetables: green beans, sliced carrots, and pieces of capsicum and zucchini, lightly roasted and speckled with seasoning.",0,0,512,512,0

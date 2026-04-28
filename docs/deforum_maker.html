@@ -1,0 +1,403 @@
+
+<h2 class="sr-only">Gamepad axis position recorder</h2>
+<style>
+  /*
+  * {
+    box-sizing: border-box; margin: 0; padding: 0; 
+  }
+  .wrap { padding: 1.25rem 0; }
+  */
+  :root {
+  --color-text-primary: #404060;
+  --color-text-secondary: #24588b;
+  --color-background-primary: #f0f0f0;
+  --color-background-secondary: #f8f8f8;
+  --border-radius-md: 4px;
+  --color-border-secondary: #444;
+  --color-border-tertiary: #f0f0f0;
+  --font-mono: sans-serif;
+}
+  body { font-family: sans-serif; }
+  .status-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 1.25rem; font-size: 13px; color: var(--color-text-secondary); }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: #888; flex-shrink: 0; transition: background .3s; }
+  .dot.connected { background: #3B6D11; }
+  .dot.recording { background: #BA7517; animation: pulse 0.6s infinite alternate; }
+  @keyframes pulse { from { opacity: 1; } to { opacity: 0.35; } }
+  .axes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 1.25rem; }
+  .axis-card { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 10px 12px; border: 0.5px solid var(--color-border-tertiary); }
+
+  .axis-label { font-size: 11px; color: var(--color-text-secondary); margin-bottom: 6px; }
+  .axis-value { font-size: 18px; font-weight: 500; color: var(--color-text-primary); }
+  .axis-bar-track { height: 4px; background: var(--color-background-primary); border-radius: 2px; margin-top: 8px; overflow: hidden; position: relative; }
+  .axis-bar-fill { height: 100%; background: #185FA5; border-radius: 2px; position: absolute; transition: left .05s, width .05s; }
+  .controls { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.25rem; }
+  button { cursor: pointer; font-family: var(--font-mono); font-size: 12px; padding: 6px 14px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: var(--color-background-primary); color: var(--color-text-primary); transition: background .15s; margin: 2px; }
+  button:hover { background: var(--color-background-secondary); }
+  button:active { transform: scale(0.98); }
+  button.primary { background: #185FA5; color: #E6F1FB; border-color: #185FA5; }
+  button.primary:hover { background: #0C447C; }
+  button.danger { border-color: #A32D2D; color: #A32D2D; }
+  button.danger:hover { background: #FCEBEB; }
+  button.success { border-color: #3B6D11; color: #3B6D11; }
+  button.success:hover { background: #EAF3DE; }
+  .log-header { font-size: 11px; color: var(--color-text-secondary); margin-bottom: 6px; display: flex; justify-content: space-between; }
+  .log-box { background: var(--color-background-secondary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); padding: 10px 12px; height: 220px; overflow-y: auto; font-size: 11px; line-height: 1.6; color: var(--color-text-primary); }
+  .log-row { display: flex; gap: 8px; border-bottom: 0.5px solid var(--color-border-tertiary); padding: 3px 0; }
+  .log-idx { color: var(--color-text-secondary); min-width: 30px; }
+  .log-ts { color: var(--color-text-tertiary); min-width: 58px; }
+  .no-gp { font-size: 13px; color: var(--color-text-secondary); padding: 2rem 0; text-align: center; }
+  .deadzone-row, .config-row { 
+    display: flex; align-items: center; 
+    /*
+    gap: 10px;
+    margin-bottom: 1.25rem;
+    font-size: 12px; 
+    */
+    color: var(--color-text-secondary); 
+  }
+  .deadzone-row input[type=range] { width: 100px; }
+  input[type=range] { width: 300px; }
+  .deadzone-row span { min-width: 36px; color: var(--color-text-primary); font-weight: 500; }
+  /*
+  .movement-pixels-row input,
+  .rotate-speed-row input 
+  */
+  .image-width-row input
+  {
+    width: 64px;
+  }
+</style>
+
+<div class="wrap">
+  <div class="status-bar">
+    <div class="dot" id="dot"></div>
+    <span id="status-text">Waiting for controller…</span>
+  </div>
+
+  <div class="axes-grid" id="axes-grid">
+    <div class="no-gp">Connect a gamepad and press any button.</div>
+  </div>
+
+  <div class="deadzone-row">
+    <label for="dz">Deadzone</label>
+    <input type="range" id="dz" min="0" max="50" value="8" step="1">
+    <span id="dz-val">0.08</span>
+  </div>
+  <div class="movement-pixels-row config-row">
+    <label for="movement-pixels">Movement speed</label>
+    <input type="range" id="movement-pixels" class="start-input" min="0" value="200" max="1024" step="1" oninput="this.nextElementSibling.value = this.value"><output></output> pixels
+  </div>
+  <div class="rotate-speed-row config-row">
+    <label for="rotate-speed">Rotate speed</label>
+    <input type="range" id="rotate-speed" class="start-input" min="0" value="20" max="180" step="1"  oninput="this.nextElementSibling.value = this.value"> <output></output>&deg;
+  </div>
+  <div class="image-width-row config-row">
+    <label for="image-width">Size:</label>
+    <input type="number" id="image-width" min="1" value="1024" step="1" size='4'> x 
+    <input type="number" id="image-height" min="1" value="1024" step="1" size='4'>
+  </div>
+
+
+  <div class="controls">
+    <button id="auto-btn" disabled>▶ Record</button>
+    <button class="danger" id="clear-btn">✕ Clear</button>
+    <button id="copy-btn">Copy .csv</button>
+    <button class="success" id="csv-btn">↓ Download CSV</button>
+  </div>
+
+  <div class="log-header">
+    <span>Recording</span>
+    <span id="count">0 entries</span>
+  </div>
+  <div class="log-box" id="log-box">
+    <div style="color:var(--color-text-tertiary); font-size:12px; padding:4px 0;">No movement yet.</div>
+  </div>
+</div>
+
+<script>
+const axisLog = [];
+let gpIndex = null;
+let autoTimer = null;
+let isAuto = false;
+
+const dot = document.getElementById('dot');
+const statusText = document.getElementById('status-text');
+const axesGrid = document.getElementById('axes-grid');
+//const recBtn = document.getElementById('rec-btn');
+const autoBtn = document.getElementById('auto-btn');
+const clearBtn = document.getElementById('clear-btn');
+const copyBtn = document.getElementById('copy-btn');
+const csvBtn = document.getElementById('csv-btn');
+const logBox = document.getElementById('log-box');
+const countEl = document.getElementById('count');
+const dzSlider = document.getElementById('dz');
+const dzVal = document.getElementById('dz-val');
+const movementPixelsInput = document.getElementById('movement-pixels');
+const rotateSpeedInput = document.getElementById('rotate-speed');
+const imageWidthInput = document.getElementById('image-width');
+const imageHeightInput = document.getElementById('image-height');
+
+let deadzone = 0.08;
+dzSlider.addEventListener('input', () => {
+  deadzone = dzSlider.value / 100;
+  dzVal.textContent = deadzone.toFixed(2);
+});
+
+window.addEventListener('gamepadconnected', e => {
+  gpIndex = e.gamepad.index;
+  dot.className = 'dot connected';
+  statusText.textContent = e.gamepad.id;
+//  recBtn.disabled = false;
+  autoBtn.disabled = false;
+  buildAxisCards(e.gamepad.axes.length);
+  // requestAnimationFrame(loop);
+  autoBtn.click();
+  // startAuto();
+});
+
+window.addEventListener('gamepaddisconnected', e => {
+  if (e.gamepad.index === gpIndex) {
+    gpIndex = null;
+    dot.className = 'dot';
+    statusText.textContent = 'Controller disconnected.';
+//    recBtn.disabled = true;
+    autoBtn.disabled = true;
+    stopAuto();
+    axesGrid.innerHTML = '<div class="no-gp">Reconnect your controller to continue.</div>';
+  }
+});
+
+function buildAxisCards(n) {
+  axesGrid.innerHTML = '';
+  const labels = [
+    'Rotate',
+    'Zoom',
+    'Horizontal',
+    'Vertical',
+  ];
+  for (let i = 0; i < n; i++) {
+    const card = document.createElement('div');
+    card.className = 'axis-card';
+    card.id = 'ax' + i;
+    card.innerHTML = `<div class="axis-label">${labels[i]}</div>
+      <div class="axis-value" id="axv${i}">0.00</div>
+      <div class="axis-bar-track"><div class="axis-bar-fill" id="axb${i}" style="left:50%;width:0%"></div></div>`;
+    axesGrid.appendChild(card);
+  }
+}
+
+function applyDeadzone(v) {
+  return Math.abs(v) < deadzone ? 0 : v;
+}
+
+function displayStatus() {
+  if (gpIndex === null) return;
+  const gp = navigator.getGamepads()[gpIndex];
+  if (!gp) { requestAnimationFrame(loop); return; }
+  gp.axes.forEach((raw, i) => {
+    const v = applyDeadzone(raw);
+    const el = document.getElementById('axv' + i);
+    const bar = document.getElementById('axb' + i);
+    if (!el) return;
+    el.textContent = v.toFixed(3);
+    const pct = Math.abs(v) * 50;
+    if (v >= 0) { bar.style.left = '50%'; bar.style.width = pct + '%'; }
+    else { bar.style.left = (50 - pct) + '%'; bar.style.width = pct + '%'; }
+  });
+}
+
+function loop() {
+  displayStatus();
+  requestAnimationFrame(loop);
+}
+
+let numberUpto = 1;
+function snapshot() {
+  if (gpIndex === null) return;
+  const gp = navigator.getGamepads()[gpIndex];
+  if (!gp) return;
+
+  displayStatus();
+
+  const entry = {
+    t: Date.now(),
+    axes: gp.axes.map(v => parseFloat(applyDeadzone(v).toFixed(4))),
+    buttons: gp.buttons.map(v => v.pressed),
+  };
+  const prevEntry = axisLog[axisLog.length-1];
+  let totalChanged = entry.axes.reduce( (a,num) => a+(num!=0?1:0), 0);
+  if(entry.buttons[0] && !prevEntry?.buttons?.[0]) {
+    ++numberUpto;
+    ++totalChanged;
+  }
+  entry.number = numberUpto;
+  if(totalChanged > 0) {
+    axisLog.push(entry);
+    renderLog(entry, axisLog.length - 1);
+    countEl.textContent = axisLog.length + ' entr' + (axisLog.length === 1 ? 'y' : 'ies');
+  }
+}
+
+function renderLog(entry, idx) {
+  if (idx === 0) logBox.innerHTML = '';
+  const ts = new Date(entry.t).toISOString().slice(11, 23);
+  const row = document.createElement('div');
+  row.className = 'log-row';
+  row.innerHTML = `<span class="log-idx">[${idx}]</span><span>${entry.number}</span><span class="log-ts">${ts}</span><span>${entry.axes.map((v,i)=>'ax'+i+': '+v.toFixed(4)).join('  ')}</span>`;
+  logBox.appendChild(row);
+  logBox.scrollTop = logBox.scrollHeight;
+}
+
+function stopAuto() {
+  clearInterval(autoTimer);
+  autoTimer = null;
+  isAuto = false;
+  autoBtn.textContent = '▶ Record';
+  dot.className = gpIndex !== null ? 'dot connected' : 'dot';
+}
+
+function startAuto() {
+  if(isAuto) return;
+  isAuto = true;
+  autoBtn.textContent = '⏹ Stop';
+  dot.className = 'dot recording';
+  autoTimer = setInterval(snapshot, 150);
+}
+
+//recBtn.addEventListener('click', snapshot);
+
+autoBtn.addEventListener('click', () => {
+  if (isAuto) { stopAuto(); return; }
+  startAuto();
+});
+
+clearBtn.addEventListener('click', () => {
+  axisLog.length = 0;
+  logBox.innerHTML = '<div style="color:var(--color-text-tertiary); font-size:12px; padding:4px 0;">No snapshots yet.</div>';
+  countEl.textContent = '0 entries';
+});
+
+copyBtn.addEventListener('click', () => {
+  // const txt = JSON.stringify(axisLog, null, 2);
+  navigator.clipboard.writeText(getCsv()).then(() => {
+    copyBtn.textContent = '✓ Copied!';
+    setTimeout(() => copyBtn.textContent = 'Copy .csv', 1500);
+  });
+});
+
+function getCsv() {
+  const maxAxes = Math.max(...axisLog.map(e => e.axes.length));
+  const headers = [
+//    'timestamp_ms', 'datetime',
+//    ...Array.from({length: maxAxes}, (_, i) => 'axis' + i)
+      'number','x','y','width','height','rotate'
+    ];
+  const rotateSpeed = parseFloat(rotateSpeedInput.value);
+  const movementPixels = parseFloat(movementPixelsInput.value);
+  const imageWidth = parseFloat(imageWidthInput.value);
+  const imageHeight = parseFloat(imageHeightInput.value);
+
+  const rows = axisLog.map(
+    e => {
+      const rotate = e.axes[0]*rotateSpeed;
+      const zoom = e.axes[1];
+      const horz = e.axes[2];
+      const vert = e.axes[3];
+      const crop={
+        x:0,
+        y:0,
+        width:imageWidth,
+        height:imageHeight,
+      };
+      const rad = rotate * Math.PI / 180
+   
+      const blankHorzPixels = imageWidth - Math.trunc(  imageWidth*Math.abs(Math.cos(rad)) +   imageHeight*Math.abs(Math.sin(rad))  )
+      const blankVertPixels = imageHeight - Math.trunc(  imageWidth*Math.abs(Math.sin(rad)) +   imageHeight*Math.abs(Math.cos(rad))  )
+
+      let zoomPixels = (0-zoom)*movementPixels;
+      const minZoomForRotation = 
+        Math.ceil(
+          Math.abs(
+            Math.max(blankHorzPixels, blankVertPixels) / 2
+          )
+        );
+
+      if (minZoomForRotation>0 && zoomPixels <minZoomForRotation) {
+        zoomPixels = minZoomForRotation;
+      }
+
+      if(zoomPixels > 0) {
+        crop.x += zoomPixels;
+        crop.y += zoomPixels;
+        crop.width -= zoomPixels*2;
+        crop.height -= zoomPixels*2;
+      }
+
+      const horzPixels = horz * movementPixels;
+      const vertPixels = vert * movementPixels;
+      crop.x += horzPixels;
+      crop.width += horzPixels;
+      crop.y += vertPixels;
+      crop.height += vertPixels;
+
+      crop.x = Math.floor(Math.max(crop.x, 0));
+      crop.y = Math.floor(Math.max(crop.y, 0));
+      crop.width = Math.floor(Math.min(crop.width, imageWidth));
+      crop.height = Math.floor(Math.min(crop.height, imageHeight));
+
+      return [
+        e.number, crop.x, crop.y, crop.width, crop.height, Math.round(0-rotate)
+      ];
+    }
+
+//    e => [
+//////    e.t,
+//////    new Date(e.t).toISOString(),
+//    ...Array.from(
+//        {length: maxAxes},
+//        (_, i) => {
+//          if (e.axes[i] !== undefined) {
+//            return (e.axes[i]);
+//          } else {
+//            return '';
+//          }
+//        }
+//      )
+//    ]
+  );
+  const csv = [headers, ...rows].map(r => r.join(',')).join('\n');
+  return csv;
+}
+
+csvBtn.addEventListener('click', () => {
+  if (axisLog.length === 0) {
+    csvBtn.textContent = '! No data';
+    setTimeout(() => csvBtn.textContent = '↓ Download CSV', 1500);
+    return;
+  }
+  const csv = getCsv();
+  const blob = new Blob([csv], {type: 'text/csv'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'axisLog_' + new Date().toISOString().slice(0,19).replace(/[:T]/g,'-') + '.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+  csvBtn.textContent = '✓ Downloaded!';
+  setTimeout(() => csvBtn.textContent = '↓ Download CSV', 1500);
+});
+
+
+(() => {
+  const elements = document.querySelectorAll('.start-input');
+
+  // 2. Loop through and dispatch the event
+  elements.forEach(element => {
+    // Use 'bubbles: true' so parent listeners can also catch it
+    const inputEvent = new Event('input', { bubbles: true });
+    element.dispatchEvent(inputEvent);
+  });
+})();
+
+window.axisLog = axisLog;
+</script>
