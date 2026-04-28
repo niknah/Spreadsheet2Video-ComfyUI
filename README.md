@@ -17,7 +17,12 @@ Or in manager -> templates -> Spreadsheet2Video
 [Long video workflow](example_workflows/Spreadsheet2Video_ConcatVideo.json)
 
 [![Long video](example_workflows/GolfBall.png)](https://niknah.github.io/Spreadsheet2Video-ComfyUI/mp4/GolfBall.mp4)
-https://github.com/user-attachments/assets/656c2f7e-081c-45e1-8e7d-dcef2ee018e2
+
+
+
+<div align="center">
+  <video src="https://github.com/user-attachments/assets/656c2f7e-081c-45e1-8e7d-dcef2ee018e2" width="70%" poster=""> </video>
+</div>
 
 
 ### Comparison video
