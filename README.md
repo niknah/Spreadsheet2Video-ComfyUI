@@ -16,10 +16,6 @@ Or in manager -> templates -> Spreadsheet2Video
 
 [Long video workflow](example_workflows/Spreadsheet2Video_ConcatVideo.json)
 
-[![Long video](example_workflows/GolfBall.png)](https://niknah.github.io/Spreadsheet2Video-ComfyUI/mp4/GolfBall.mp4)
-
-
-
 <div align="center">
   <video src="https://github.com/user-attachments/assets/656c2f7e-081c-45e1-8e7d-dcef2ee018e2" width="70%" poster=""> </video>
 </div>
@@ -29,6 +25,10 @@ Or in manager -> templates -> Spreadsheet2Video
 
 * [Comparison video workflow](example_workflows/Spreadsheet2Video_Comparison.json)
 
+<div align="center">
+  <video src="https://github.com/user-attachments/assets/65fc85b0-d24f-4f4e-9f52-6c23aa54d115" width="70%" poster=""> </video>
+</div>
+
 
 ### Deforum-like videos example
 
@@ -36,8 +36,10 @@ Or in manager -> templates -> Spreadsheet2Video
 * Copy and paste into a .csv file. [example .csv file](example_workflows/Cooking.csv)
 * [workflow](example_workflows/Spreadsheet2Video_deforum.json)
 
+<div align="center">
+  <video src="https://github.com/user-attachments/assets/c95a9386-ebfc-4830-955b-374493fbc69f" width="70%" poster=""> </video>
+</div>
 
-[![deforum video](example_workflows/boiling_pot.png)](https://niknah.github.io/Spreadsheet2Video-ComfyUI/mp4/deforum.mp4)
 
 ### Non video
 
@@ -45,10 +47,14 @@ Or in manager -> templates -> Spreadsheet2Video
 
 
 
-## Instructions
+## Video Instructions
 
 
-<video src="https://niknah.github.io/Spreadsheet2Video-ComfyUI/mp4/Spreadsheet2Video_Instructions.mp4" width="1024" controls></video>
+<div align="center">
+  <video src="https://www.youtube.com/watch?v=2c_Ass5-dg4" width="70%" poster=""> </video>
+</div>
+
+
 
 
 
