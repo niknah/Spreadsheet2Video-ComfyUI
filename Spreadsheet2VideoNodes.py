@@ -15,6 +15,8 @@ import random
 import logging
 import torch
 import re
+import pandas as pd
+
 
 
 class S2VComfy():
@@ -130,6 +132,7 @@ class Spreadsheet2VideoOutputImage(io.ComfyNode):
             node_id="Spreadsheet2VideoOutputImage",
             display_name="Spreadsheet2Video Output Image",
             category="Spreadsheet2Video",
+            search_aliases=["spreadsheet", "loop", "output"],
             inputs=[
                 io.Image.Input("images", lazy=True, tooltip="Link the image or video output here."),
             ],
@@ -155,6 +158,7 @@ class Spreadsheet2VideoInputImage(io.ComfyNode):
             node_id="Spreadsheet2VideoInputImage",
             display_name="Spreadsheet2Video Input Image",
             category="Spreadsheet2Video",
+            search_aliases=["spreadsheet", "loop", "output"],
             inputs=[
                 io.String.Input("COLUMN1", lazy=True, tooltip="Name of this part of the workflow.  Use the same name in the spreadsheet's first column."),
             ],
@@ -298,7 +302,7 @@ class GroupInfo():
                 continue
 
             if group_name in by_group_name:
-                raise ValueException(f"S2V: Duplicate group names: {group_name}")
+                raise ValueError(f"S2V: Duplicate group names: {group_name}")
 
             group_info = GroupInfo(input_node_id, group_name)
             by_group_name[group_name] = group_info
@@ -528,8 +532,10 @@ class Spreadsheet2VideoLoadText(io.ComfyNode):
         # files = folder_paths.filter_files_content_types(files, ["text", "application"])
         return io.Schema(
             node_id="Spreadsheet2VideoLoadText",
-            display_name="Spreadsheet2Video Load Text",
+            display_name="Spreadsheet2Video Load Spreadsheet",
             category="Spreadsheet2Video",
+            description="Loads spreadsheet or .csv into text for input into main Spreadsheet2Video node",
+            search_aliases=["spreadsheet", "loop", "output", "load"],
             inputs=[
                 io.Combo.Input("text_file", options=options),
             ],
@@ -539,12 +545,31 @@ class Spreadsheet2VideoLoadText(io.ComfyNode):
         )
 
     @classmethod
+    def ods_to_csv(cls, ods_path: str):
+        """Convert all sheets in an ODS file to separate CSV files."""
+        ods_path = Path(ods_path)
+
+        # Read all sheets from the ODS file
+        df = pd.read_excel(ods_path)
+
+        buffer = StringIO()
+        df.to_csv(buffer, index=False)
+        return io.NodeOutput(
+            buffer.getvalue()
+        )
+
+    @classmethod
     def execute(cls, text_file) -> io.NodeOutput:
         input_dir = folder_paths.get_input_directory()
         text_file_path = Path(input_dir) / text_file
-        return io.NodeOutput(
-            text_file_path.read_text(encoding='utf-8')
-        )
+        if (text_file_path.suffix == '.csv'
+            or text_file_path.suffix == '.csv'
+        ):
+            return io.NodeOutput(
+                text_file_path.read_text(encoding='utf-8')
+            )
+        else:
+            return cls.ods_to_csv(str(text_file_path))
 
     @classmethod
     def fingerprint_inputs(s, text_file):
@@ -591,6 +616,7 @@ class Spreadsheet2VideoNode(io.ComfyNode):
             node_id="Spreadsheet2Video",
             display_name="Spreadsheet2Video",
             category="Spreadsheet2Video",
+            search_aliases=["spreadsheet", "loop", "output"],
             inputs=[
                 io.String.Input("spreadsheet", multiline=True, tooltip="Comma separated values with a header row"),
                 io.Image.Input("first_image", optional=True, tooltip="First image to send to the S2VInputImage node.  Use EmptyImage if you don't need it"),
@@ -655,9 +681,12 @@ class Spreadsheet2VideoNode(io.ComfyNode):
 #                    row[0]
 #                )
 
-            name = row[0]
+            name = row[0].strip()
+            if name == "":
+                logging.error(f"S2V: No : {row}")
+                continue
             if name not in by_group_name:
-                logging.error(f"S2V: Could not find group name: {name}")
+                raise ValueError(f"S2V: Could not find Spreadsheet2VideoInputImage node with name: {name}")
                 continue
 
             group_info = by_group_name[name]
@@ -686,7 +715,7 @@ class Spreadsheet2VideoNode(io.ComfyNode):
                 row
                 )
             if not foundImageInput:
-                logging.error(f"S2V: Could not find image input node, column1: {name}")
+                logging.warn(f"S2V: No image input node, ignore if this is a non image workflow, column1: {name}")
 
 
 

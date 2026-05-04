@@ -75,12 +75,18 @@ The video was made with the workflow and panning was done later in a video edito
 | Spreadsheet2Video | Use a start image or use EmptyImage node if you don't want to make a video |
 | Spreadsheet2Video Input Image | Give it a name. Link the columns to your workflow. |
 | Spreadsheet2Video Output Image | Put the output image here.  Link the image to the `Spreadsheet2Video Input Image` node if you have no image output.  The next row will use this image or the last frame if it is a video. |
-| Spreadsheet2Video Load Text | Optional.  Loads a file, link to spreadsheet when you want to use a .csv file instead of typing in the data.  Can put it into `input` or `input/csv` folders. |
+| Spreadsheet2Video Load Spreadsheet | Optional.  Loads a file, link to spreadsheet when you want to use a .csv, xlsx, ods file instead of typing in the data.  Can put the file into `input` or `input/csv` folders. |
 | Other nodes | Ignore them.  Used internally only |
 
+
+* The raw frames are in the `ComfyUI/temp` folder if you want lossless quality
 
 
 ## Warning
 
-The preview might not open the workflow in in the assets list.  You need to download the file and open the file instead.
+* The preview might not open the workflow in in the assets list.  You need to download the file and open the file instead.
+
+* To load .ods spreadsheets.  Run `pip install odfpy`.
+
+* Some nodes pre-calculate the values before the nodes are executed.  These won't work.  An example is [ComfyUI-String-Helper StringFormatter](https://github.com/liuqianhonga/ComfyUI-String-Helper).  Use string concatenate instead or do it in the spreadsheet
 
