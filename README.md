@@ -19,7 +19,7 @@ Or in manager -> templates -> Spreadsheet2Video
 * Link up an image to the main Spreadsheet2Video node
 * Row 1 will use the first image.  Row 2 will use the image output from Row 1.  If row 1 outputs a video, row 2 will get the last frame of video from row 1.
 
-Can be used for non-video, image workflows.  Use a blank image to start.  See the example workflow in the templates.
+Can be used for non-video workflows.  See the example workflow in the templates.
 
 [Video Instructions](https://www.youtube.com/watch?v=2c_Ass5-dg4)
 
@@ -76,6 +76,7 @@ The video was made with the workflow and panning was done later in a video edito
 | Spreadsheet2Video Input Image | Give it a name. Link the columns to your workflow. |
 | Spreadsheet2Video Output Image | Put the output image here.  Link the image to the `Spreadsheet2Video Input Image` node if you have no image output.  The next row will use this image or the last frame if it is a video. |
 | Spreadsheet2Video Load Spreadsheet | Optional.  Loads a file, link to spreadsheet when you want to use a .csv, xlsx, ods file instead of typing in the data.  Can put the file into `input` or `input/csv` folders. |
+| Spreadsheet2Video Multiply Spreadsheet | Adds extra columns to a spreadsheet. Multiplying the spreadsheet. |
 | Other nodes | Ignore them.  Used internally only |
 
 
@@ -88,5 +89,8 @@ The video was made with the workflow and panning was done later in a video edito
 
 * To load .ods spreadsheets.  Run `pip install odfpy`.
 
-* Some nodes pre-calculate the values before the nodes are executed.  These won't work.  An example is [ComfyUI-String-Helper StringFormatter](https://github.com/liuqianhonga/ComfyUI-String-Helper).  Use string concatenate instead or do it in the spreadsheet
+* When you set the seed to "randomize".  The number only changes after every run.  It will be the same seed after each row.  Add another column and connect it up to the seed to get a different seed every row.
 
+## Changes
+
+* v1.0.1: Allow running of non-video workflows without using a blank image or video output.  Added multiply spreadsheet node.

@@ -66,9 +66,9 @@ class Spreadsheet2VideoProcessImage(io.ComfyNode):
     def define_schema(cls) -> io.Schema:
         return io.Schema(
             node_id="Spreadsheet2VideoProcessImage",
-            display_name="Internal Spreadsheet2Video Process Image",
+            display_name="Internal S2V Process Image",
             description="internal node, ignore",
-            category="Spreadsheet2Video",
+            category="S2V Internal",
             inputs=[
                 io.Int.Input("previous"),
                 io.Image.Input("images"),
@@ -438,9 +438,9 @@ class Spreadsheet2VideoFinalVideo(io.ComfyNode):
     def define_schema(cls) -> io.Schema:
         return io.Schema(
             node_id="Spreadsheet2VideoFinalVideo",
-            display_name="Internal Spreadsheet2Video Final Video",
+            display_name="Internal S2V Final Video",
             description="internal node, ignore",
-            category="Spreadsheet2Video",
+            category="S2V Internal",
             inputs=[
                 io.Int.Input("previous"),
 #                io.Image.Input("images"),
@@ -496,6 +496,55 @@ class Spreadsheet2VideoFinalVideo(io.ComfyNode):
         return io.NodeOutput(
             output_tensor
         )
+
+class Spreadsheet2VideoMultiplySpreadsheet(io.ComfyNode):
+    @classmethod
+    def define_schema(cls) -> io.Schema:
+        return io.Schema(
+            node_id="Spreadsheet2VideoMultiplySpreadsheet",
+            display_name="Spreadsheet2Video Multiply Spreadsheet",
+            category="Spreadsheet2Video",
+            description="Adds columns to a spreadsheet.  Duplicating it by the spreadsheet_to_add",
+            search_aliases=["spreadsheet", "loop", "multiply", "load", "column"],
+            inputs=[
+                io.String.Input("spreadsheet", multiline=True, tooltip="Comma separated values with a header row. Can use Spreadsheet2Video Load Spreadsheet node."),
+                io.String.Input("spreadsheet_to_add", multiline=True, tooltip="Comma separated values with a header row.  The columns to add"),
+            ],
+            outputs=[
+                io.String.Output(),
+            ],
+        )
+
+    @classmethod
+    def execute(cls, spreadsheet, spreadsheet_to_add) -> io.NodeOutput:
+        f = StringIO(spreadsheet)
+        reader = csv.reader(f, delimiter=',')
+        headerRow = next(reader)
+        from_rows = list(reader)
+
+        for from_row in from_rows:
+            if len(from_row) < len(headerRow):
+                from_row += [None] * (len(headerRow) - len(from_row))
+
+
+        f = StringIO(spreadsheet_to_add)
+        reader = csv.reader(f, delimiter=',')
+
+        output = StringIO()
+        writer = csv.writer(output)
+
+        addHeaderRow = next(reader)
+        writer.writerow(headerRow + addHeaderRow)
+
+        for row_to_add in reader:
+            for from_row in from_rows:
+                writer.writerow(from_row + row_to_add)
+        # writer.close()
+
+        return io.NodeOutput(
+            output.getvalue()
+            )
+
 
 class Spreadsheet2VideoLoadText(io.ComfyNode):
     @classmethod
@@ -604,7 +653,7 @@ class Spreadsheet2VideoNode(io.ComfyNode):
             category="Spreadsheet2Video",
             search_aliases=["spreadsheet", "loop", "output"],
             inputs=[
-                io.String.Input("spreadsheet", multiline=True, tooltip="Comma separated values with a header row"),
+                io.String.Input("spreadsheet", multiline=True, tooltip="Comma separated values with a header row. Can use Spreadsheet2Video Load Spreadsheet node."),
                 io.Image.Input("first_image", optional=True, tooltip="First image to send to the S2VInputImage node.  Use EmptyImage if you don't need it"),
             ],
             outputs=[
