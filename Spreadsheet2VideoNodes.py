@@ -3,7 +3,6 @@ from comfy_execution.graph import ExecutionBlocker
 from comfy_api.latest import io
 from nodes import NODE_CLASS_MAPPINGS
 from server import PromptServer
-# import comfy.model_management
 import csv
 import hashlib
 from io import StringIO
@@ -170,7 +169,6 @@ class Spreadsheet2VideoInputImage(io.ComfyNode):
         # output video
 
         return io.NodeOutput(
-#            None
             ExecutionBlocker(None)
         )
 
@@ -198,9 +196,6 @@ class GroupInfo():
                 self.output_image_link = node.out(1) # [node_id, 1]
                 found_node = node
 
-                # if "inputs" in node and len(node["inputs"]) > 0:
-                    # self.output_image_link = node["inputs"]["images"]
-
         if output_image_node_id is None:
             logging.error("S2V: Could not find output image node")
         return found_node
@@ -209,8 +204,6 @@ class GroupInfo():
     def map_children(cls, prompt):
         input_node_ids = []
         child_node_ids = {}
-#        for node_id in dynprompt.all_node_ids():
-#            node = dynprompt.get_node(node_id)
         for node_id, node in prompt.items():
             if "inputs" not in node:
                 continue
@@ -290,7 +283,6 @@ class GroupInfo():
 
         by_group_name = {}
         for input_node_id in input_node_ids:
-#            inputImageNode = dynprompt.get_node(input_node_id)
             inputImageNode = prompt[input_node_id]
 
             group_name = cls.get_group_name_from_node(inputImageNode)
@@ -354,7 +346,6 @@ class GroupInfo():
 
         node_id_map = {}
         for node_id in contained:
-#            original_node = dynprompt.get_node(node_id)
             original_node = prompt[node_id]
             new_node = graph.node(original_node["class_type"])
             new_node.set_override_display_id(node_id)
@@ -425,10 +416,6 @@ class GroupInfo():
             if class_type in NODE_CLASS_MAPPINGS:
                 node_class = NODE_CLASS_MAPPINGS[class_type]
 
-            # if "inputs" not in node:
-            #    continue
-
-            # node_inputs = node["inputs"]
             node_inputs = node.inputs
             for k, v in node_inputs.items():
                 if is_link(v):
@@ -651,14 +638,6 @@ class Spreadsheet2VideoNode(io.ComfyNode):
         processImageNode = graph.node("Spreadsheet2VideoProcessImage",
             previous = 1, images = first_image)
         lastProcessImageNode = processImageNode
-#        processImageNode.set_input(
-#            "images",
-#            first_image
-#        )
-#        processImageNode.set_input(
-#            "previous",
-#            1
-#        )
 
         rows_done = 0
         for row in reader:
@@ -669,12 +648,6 @@ class Spreadsheet2VideoNode(io.ComfyNode):
                 ))
 
             previous_image_output = processImageNode.out(1)
-
-#            for col in range(1,len(row)):
-#                processImageNode.set_input(
-#                    f"COLUMN{col}",
-#                    row[0]
-#                )
 
             name = row[0].strip()
             if name == "":
@@ -690,10 +663,6 @@ class Spreadsheet2VideoNode(io.ComfyNode):
 
             if previous_image_output is not None:
                 link_to_input = previous_image_output
-#                link_to_input = [
-#                    previous_image_output["new_node_id"],
-#                    previous_image_output["key"],
-#                ]
             else:
                 link_to_input = first_image
 
@@ -714,13 +683,7 @@ class Spreadsheet2VideoNode(io.ComfyNode):
 
 
 
-            # output_link = this_node["inputs"][upstream_info.column_number + 2]
-            # new_output_node = upstream_info.get_new_node(output_link[0])
-
-            # output_link = group_info.output_image_link
-            # previous_image_output = { "new_node_id": output_link[0], "key": output_link[1] }
             previous_image_output = group_info.output_image_link
-            # previous_input_link = [new_output_node["id"], output_link[1]]
             rows_done += 1
 
         if rows_done == 0:
@@ -730,16 +693,8 @@ class Spreadsheet2VideoNode(io.ComfyNode):
             "Spreadsheet2VideoFinalVideo",
             previous = lastProcessImageNode.out(0)
         )
-#        finalVideoNode.set_input(
-#            "images",
-#            previous_image_output
-#        )
-
-        # logging.info(graph)
 
         return io.NodeOutput(
-                # [previous_image_output["new_node_id"], previous_image_output["key"]],
-                #            [ finalVideoNode.id, 0],
             finalVideoNode.out(0),
             expand=graph.finalize(),
             )
