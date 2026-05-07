@@ -15,6 +15,8 @@ import random
 import logging
 import torch
 import re
+import time
+import datetime
 import pandas as pd
 
 
@@ -57,8 +59,10 @@ class S2VComfy():
         return cls.get_prompt_dir() / ("f_%06d" % (max_num+1) )
 
 
+last_processed_time = None
 # Executed after each row
 class Spreadsheet2VideoProcessImage(io.ComfyNode):
+
     @classmethod
     def define_schema(cls) -> io.Schema:
         return io.Schema(
@@ -79,7 +83,7 @@ class Spreadsheet2VideoProcessImage(io.ComfyNode):
 
     @classmethod
     def execute(cls, previous, images) -> io.NodeOutput:
-#        if images.shape != Spreadsheet2VideoNode.blank_image_shape:
+        global last_processed_time
         if images is not None:
             for (batch_number, image) in enumerate(images):
                 next_file = S2VComfy.get_next_file()
@@ -96,20 +100,12 @@ class Spreadsheet2VideoProcessImage(io.ComfyNode):
                 raise Exception(f"S2VProcessImage.  No image shape: {str(images.shape)}")
 
         output_image = None if images is None else images[-1:]
-#        output = [
-#            previous,
-#            output_image
-#        ]
-#        # pass on COLUMN? arguments to output
-#        kwKeys = kwargs.keys()
-#        for k in kwKeys.keys():
-#            m=re.search(r"\d+", k)
-#            if m:
-#                num =  int(m.group(0))
-#                if num >= len(output):
-#                    output.extend( [None] * (len(output) - num + 1) )
-#                output[num] = kwargs[k]
 
+        current_time = time.time()
+        if last_processed_time is not None:
+            time_len = current_time - last_processed_time 
+            logging.info(f"S2V: time taken for row: {datetime.timedelta(time_len/86400)}")
+        last_processed_time = current_time
 
         return io.NodeOutput(
             # images[images.shape[0]-1,]
@@ -634,20 +630,15 @@ class Spreadsheet2VideoNode(io.ComfyNode):
 
     @classmethod
     def execute(cls, spreadsheet="", first_image=None) -> io.NodeOutput:
+        global last_processed_time
+        last_processed_time = None
+
         graph = GraphBuilder()
-        # this_nodep = cls.hidden.prompt.get_node(cls.hidden.unique_id)
 
         # Use StringIO to treat the string as a file
         f = StringIO(spreadsheet)
 
-
-        # result = [images]
         by_group_name = GroupInfo.map_outputs(cls.hidden.prompt)
-
-#        if first_image is None:
-#            # some workflows will only use values that go straight to the node, skipping the ProcessImage node.  
-#            # Put something in the This makes sure we do
-#            first_image = torch.zeros(Spreadsheet2VideoNode.blank_image_shape)
 
 
         reader = csv.reader(f, delimiter=',')
