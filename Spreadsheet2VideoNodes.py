@@ -501,7 +501,10 @@ class Spreadsheet2VideoFinalVideo(io.ComfyNode):
             raise Exception("\n".join(errors))
 
         logging.info(f"S2V: final image count:{len(output_images)}")
-        output_tensor = torch.cat(output_images, dim=0)
+        if len(output_images)==0:
+            output_tensor = torch.tensor([])
+        else:
+            output_tensor = torch.cat(output_images, dim=0)
 
         return io.NodeOutput(
             output_tensor
@@ -622,6 +625,7 @@ class Spreadsheet2VideoNode(io.ComfyNode):
             ],
             hidden=[io.Hidden.unique_id, io.Hidden.dynprompt, io.Hidden.prompt],
             enable_expand=True,
+            is_output_node=True,
         )
 
     @classmethod
