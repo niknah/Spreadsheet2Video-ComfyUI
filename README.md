@@ -19,9 +19,16 @@ Or in manager -> templates -> Spreadsheet2Video
 * Link up an image to the main Spreadsheet2Video node
 * Row 1 will use the first image.  Row 2 will use the image output from Row 1.  If row 1 outputs a video, row 2 will get the last frame of video from row 1.
 
-Can be used for non-video workflows.  See the example workflow in the templates.
-
 [Video Instructions](https://www.youtube.com/watch?v=2c_Ass5-dg4)
+
+[Multiply spreadsheet node Instructions](https://youtu.be/DzXlj83XVxM)
+
+
+## Uses
+
+* Columns can be connected to most things, files, drop downs, strings, numbers,  booleans.
+* Can be used for non-video workflows.  See the example workflow in the templates.
+
 
 
 ### Long video
@@ -76,7 +83,7 @@ The video was made with the workflow and panning was done later in a video edito
 | Spreadsheet2Video Input Image | Give it a name. Link the columns to your workflow. |
 | Spreadsheet2Video Output Image | Put the output image here.  Link the image to the `Spreadsheet2Video Input Image` node if you have no image output.  The next row will use this image or the last frame if it is a video. |
 | Spreadsheet2Video Load Spreadsheet | Optional.  Loads a file, link to spreadsheet when you want to use a .csv, xlsx, ods file instead of typing in the data.  Can put the file into `input` or `input/csv` folders. |
-| Spreadsheet2Video Multiply Spreadsheet | Adds extra columns to a spreadsheet. Multiplying the spreadsheet. |
+| Spreadsheet2Video Multiply Spreadsheet | Adds extra columns to a spreadsheet. Multiplying the spreadsheet. [workflow](example_workflows/Spreadsheet2Video_Multiply_Spreadsheet.json) |
 | Other nodes | Ignore them.  Used internally only |
 
 

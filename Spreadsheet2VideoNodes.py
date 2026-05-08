@@ -570,9 +570,10 @@ class Spreadsheet2VideoLoadText(io.ComfyNode):
             display_name="Spreadsheet2Video Load Spreadsheet",
             category="Spreadsheet2Video",
             description="Loads spreadsheet or .csv into text for input into main Spreadsheet2Video node",
-            search_aliases=["spreadsheet", "loop", "output", "load"],
+            search_aliases=["spreadsheet", "loop", "output", "load", "csv", "xlsx", "ods"],
             inputs=[
                 io.Combo.Input("text_file", options=options),
+                io.String.Input("sheet_name", default="", tooltip="Leave blank for first sheet", optional=True),
             ],
             outputs=[
                 io.String.Output(),
@@ -580,12 +581,12 @@ class Spreadsheet2VideoLoadText(io.ComfyNode):
         )
 
     @classmethod
-    def ods_to_csv(cls, ods_path: str):
+    def ods_to_csv(cls, ods_path: str, sheet_name):
         """Convert all sheets in an ODS file to separate CSV files."""
         ods_path = Path(ods_path)
 
         # Read all sheets from the ODS file
-        df = pd.read_excel(ods_path)
+        df = pd.read_excel(ods_path, sheet_name)
 
         buffer = StringIO()
         df.to_csv(buffer, index=False)
@@ -594,7 +595,7 @@ class Spreadsheet2VideoLoadText(io.ComfyNode):
         )
 
     @classmethod
-    def execute(cls, text_file) -> io.NodeOutput:
+    def execute(cls, text_file, sheet_name=None) -> io.NodeOutput:
         input_dir = folder_paths.get_input_directory()
         text_file_path = Path(input_dir) / text_file
         if (text_file_path.suffix == '.csv'
@@ -604,10 +605,12 @@ class Spreadsheet2VideoLoadText(io.ComfyNode):
                 text_file_path.read_text(encoding='utf-8')
             )
         else:
-            return cls.ods_to_csv(str(text_file_path))
+            if sheet_name == "" or sheet_name is None:
+                sheet_name = 0
+            return cls.ods_to_csv(str(text_file_path), sheet_name)
 
     @classmethod
-    def fingerprint_inputs(s, text_file):
+    def fingerprint_inputs(s, text_file, sheet_name=None):
         input_dir = folder_paths.get_input_directory()
         text_file_path = Path(input_dir) / text_file
         st=Path(text_file_path).stat()
@@ -616,6 +619,7 @@ class Spreadsheet2VideoLoadText(io.ComfyNode):
             text_file,
             f"{st.st_size}",
             f"{st.st_mtime}",
+            str(sheet_name)
         ])
 
         # Hash it
