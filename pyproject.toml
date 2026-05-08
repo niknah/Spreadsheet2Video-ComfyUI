@@ -1,6 +1,6 @@
 [project]
 name = "Spreadsheet2Video-ComfyUI"
-version = "1.0.0"
+version = "1.0.1"
 description = "Use a spreadsheet as input for ComfyUI execution"
 license = { file = "LICENSE" }
 dependencies = [
