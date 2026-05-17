@@ -33,7 +33,7 @@ Or in manager -> templates -> Spreadsheet2Video
 
 ### Long video
 
-[Long video workflow](example_workflows/Spreadsheet2Video_ConcatVideo.json)
+[Long video (Wan) workflow](example_workflows/Spreadsheet2Video_ConcatVideo.json)
 
 The video was made with the workflow and panning was done later in a video editor.
 
@@ -41,6 +41,8 @@ The video was made with the workflow and panning was done later in a video edito
   <video src="https://github.com/user-attachments/assets/656c2f7e-081c-45e1-8e7d-dcef2ee018e2" width="70%" poster=""> </video>
 </div>
 
+[Long video (LTX) workflow](example_workflows/Spreadsheet2Video_LTX_example.json)
+[(Video)](https://github.com/user-attachments/assets/b2d4fcf2-b6ca-49e3-8fd0-a3b874704aeb)
 
 
 ### Comparison video
@@ -100,4 +102,5 @@ The video was made with the workflow and panning was done later in a video edito
 
 ## Changes
 
+* v1.0.2: Added audio.  Removed the need for the output image node if we are not making a long video.
 * v1.0.1: Allow running of non-video workflows without using a blank image or video output.  Added multiply spreadsheet node.
