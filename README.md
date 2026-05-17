@@ -54,6 +54,10 @@ The video was made with the workflow and panning was done later in a video edito
 </div>
 
 
+* [Style Comparison workflow](example_workflows/Spreadsheet2Video_StyleChangeComparison.json)
+[(video)](https://youtu.be/XyKiLByXNaY)
+
+
 ### Deforum-like videos example
 
 * [Make zoom / rotate / move parameters with a game controller](https://niknah.github.io/spreadsheet2video-ComfyUI/deforum\_maker.html)
