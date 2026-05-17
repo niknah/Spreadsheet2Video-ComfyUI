@@ -13,6 +13,7 @@ import folder_paths
 import random
 import logging
 import torch
+import torchaudio
 import re
 import time
 import datetime
@@ -34,18 +35,18 @@ class S2VComfy():
 
 
     @classmethod
-    def get_all_files(cls):
+    def get_all_files(cls, prefix):
         prompt_dir = cls.get_prompt_dir()
         # this could be quicker if we kept track
         files = [
             entry for entry in prompt_dir.iterdir()
-                if entry.name.startswith("f_") 
+                if entry.name.startswith(prefix) 
         ]
         files.sort()
         return files
 
     @classmethod
-    def get_next_file(cls):
+    def get_next_file(cls, prefix):
         prompt_dir = cls.get_prompt_dir()
         max_num = 0
         # this could be quicker if we kept track
@@ -55,7 +56,7 @@ class S2VComfy():
                 num = int(m.group(1))
                 if num > max_num:
                     max_num = num
-        return cls.get_prompt_dir() / ("f_%06d" % (max_num+1) )
+        return cls.get_prompt_dir() / ("%s%06d" % (prefix, max_num+1) )
 
 
 last_processed_time = None
@@ -71,21 +72,23 @@ class Spreadsheet2VideoProcessImage(io.ComfyNode):
             category="S2V Internal",
             inputs=[
                 io.Int.Input("previous"),
-                io.Image.Input("images"),
+                io.Image.Input("images", optional=True),
+                io.Audio.Input("audio", optional=True),
             ],
             outputs=[
                 io.Int.Output(),
                 io.Image.Output(),
+                io.Audio.Output(),
             ],
             hidden=[],
         )
 
     @classmethod
-    def execute(cls, previous, images) -> io.NodeOutput:
+    def execute(cls, previous, images=None, audio=None) -> io.NodeOutput:
         global last_processed_time
         if images is not None:
             for (batch_number, image) in enumerate(images):
-                next_file = S2VComfy.get_next_file()
+                next_file = S2VComfy.get_next_file("v_")
                 next_file = next_file.with_suffix(".png")
 
                 i = 255. * image.cpu().numpy()
@@ -97,6 +100,14 @@ class Spreadsheet2VideoProcessImage(io.ComfyNode):
 
             if (images.shape[0] == 0):
                 raise Exception(f"S2VProcessImage.  No image shape: {str(images.shape)}")
+
+        if audio is not None:
+            next_file = S2VComfy.get_next_file("a_")
+            next_file = next_file.with_suffix(".flac")
+
+            logging.info(f"S2V: save audio: {str(next_file)}")
+
+            torchaudio.save(next_file, audio["waveform"][0], audio["sample_rate"], format="flac")
 
         output_image = None if images is None else images[-1:]
 
@@ -110,11 +121,12 @@ class Spreadsheet2VideoProcessImage(io.ComfyNode):
             # images[images.shape[0]-1,]
 #            images
             previous,
-            output_image
+            output_image,
+            audio
         )
 
     @classmethod
-    def fingerprint_inputs(s, previous=1, images=None):
+    def fingerprint_inputs(s, previous=1, images=None, audio=None):
         # always run because the other nodes are not a part of this execution pth
         return str(random.random())
 
@@ -130,6 +142,7 @@ class Spreadsheet2VideoOutputImage(io.ComfyNode):
             search_aliases=["spreadsheet", "loop", "output"],
             inputs=[
                 io.Image.Input("images", lazy=True, tooltip="Link the image or video output here."),
+                io.Audio.Input("audio", lazy=True, optional=True, tooltip="Link the audio output here."),
             ],
             outputs=[
             ],
@@ -138,8 +151,9 @@ class Spreadsheet2VideoOutputImage(io.ComfyNode):
 
     @classmethod
     def execute(cls, name) -> io.NodeOutput:
+        # raise Error(f"This node should not be executed")
         return io.NodeOutput(
-            None
+            ExecutionBlocker(None)
         )
 
     def check_lazy_status(cls, images=None):
@@ -165,9 +179,6 @@ class Spreadsheet2VideoInputImage(io.ComfyNode):
 
     @classmethod
     def execute(cls, COLUMN1=None) -> io.NodeOutput:
-
-        # output video
-
         return io.NodeOutput(
             ExecutionBlocker(None)
         )
@@ -447,6 +458,7 @@ class Spreadsheet2VideoFinalVideo(io.ComfyNode):
             ],
             outputs=[
                 io.Image.Output(),
+                io.Audio.Output(),
             ],
             hidden=[],
         )
@@ -454,7 +466,7 @@ class Spreadsheet2VideoFinalVideo(io.ComfyNode):
     @classmethod
     def execute(cls, previous) -> io.NodeOutput:
         # TODO: ffmpeg to save memory?
-        all_files = S2VComfy.get_all_files()
+        all_files = S2VComfy.get_all_files("v_")
         output_images = []
         for file in all_files:
             image = Image.open(file)
@@ -466,6 +478,7 @@ class Spreadsheet2VideoFinalVideo(io.ComfyNode):
             image = np.array(image).astype(np.float32) / 255.0
             image = torch.from_numpy(image)[None,]
             output_images.append(image)
+
 
         errors = []
         if len(output_images) > 0:
@@ -493,8 +506,27 @@ class Spreadsheet2VideoFinalVideo(io.ComfyNode):
         else:
             output_tensor = torch.cat(output_images, dim=0)
 
+        all_audio_files = S2VComfy.get_all_files("a_")
+        output_audio = {}
+        waveforms = []
+        for audio_file in all_audio_files:
+            waveform, sample_rate = torchaudio.load(audio_file)
+            waveforms.append(waveform)
+            if "sample_rate" in output_audio:
+                previous_sample_rate = output_audio["sample_rate"]
+                if previous_sample_rate != sample_rate:
+                    logging.error(f"S2V: audio has a different sample_rate: previous:{previous_sample_rate} != current:{sample_rate}, {audio_file}")
+            else:
+                output_audio["sample_rate"] = sample_rate
+
+        if len(waveforms)==0:
+            output_audio["waveform"] = torch.empty(1, 1, 0)
+        else:
+            output_audio["waveform"] = torch.cat(waveforms, dim=1).unsqueeze(0)
+
         return io.NodeOutput(
-            output_tensor
+            output_tensor,
+            output_audio
         )
 
 class Spreadsheet2VideoMultiplySpreadsheet(io.ComfyNode):
@@ -662,6 +694,7 @@ class Spreadsheet2VideoNode(io.ComfyNode):
             ],
             outputs=[
                 io.Image.Output(),
+                io.Audio.Output(),
             ],
             hidden=[io.Hidden.unique_id, io.Hidden.dynprompt, io.Hidden.prompt],
             enable_expand=True,
@@ -713,6 +746,8 @@ class Spreadsheet2VideoNode(io.ComfyNode):
             group_info = by_group_name[name]
             group_info.copy_nodes(cls.hidden.prompt, graph)
             processImageNode = group_info.change_out_node(graph)
+            if processImageNode is None:
+                processImageNode = graph.node('Spreadsheet2VideoProcessImage')
 
             if previous_image_output is not None:
                 link_to_input = previous_image_output
@@ -749,6 +784,7 @@ class Spreadsheet2VideoNode(io.ComfyNode):
 
         return io.NodeOutput(
             finalVideoNode.out(0),
+            finalVideoNode.out(1),
             expand=graph.finalize(),
             )
 
