@@ -468,7 +468,8 @@ class Spreadsheet2VideoFinalVideo(io.ComfyNode):
         # TODO: ffmpeg to save memory?
         all_files = S2VComfy.get_all_files("v_")
         output_images = []
-        for file in all_files:
+        # skip first image, it maybe a different size to the video
+        for file in all_files[1:]:
             image = Image.open(file)
 
             if image.mode == 'I':
@@ -506,6 +507,7 @@ class Spreadsheet2VideoFinalVideo(io.ComfyNode):
         else:
             output_tensor = torch.cat(output_images, dim=0)
 
+        # Put audio together
         all_audio_files = S2VComfy.get_all_files("a_")
         output_audio = {}
         waveforms = []

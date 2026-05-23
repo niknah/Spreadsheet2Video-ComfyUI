@@ -106,5 +106,6 @@ The video was made with the workflow and panning was done later in a video edito
 
 ## Changes
 
+* v1.0.3: Don't use the first image because some workflows may resize it by default.
 * v1.0.2: Added audio.  Removed the need for the output image node if we are not making a long video.
 * v1.0.1: Allow running of non-video workflows without using a blank image or video output.  Added multiply spreadsheet node.
