@@ -36,6 +36,7 @@ Or in manager -> templates -> Spreadsheet2Video
 [Long video (Wan) workflow](example_workflows/Spreadsheet2Video_ConcatVideo.json)
 
 The video was made with the workflow and panning was done later in a video editor.
+Using flux klein edit(to make new objects appear) + wan video.
 
 <div align="center">
   <video src="https://github.com/user-attachments/assets/656c2f7e-081c-45e1-8e7d-dcef2ee018e2" width="70%" poster=""> </video>
