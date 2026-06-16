@@ -3,6 +3,7 @@ from comfy_execution.graph import ExecutionBlocker
 from comfy_api.latest import io
 from nodes import NODE_CLASS_MAPPINGS
 from server import PromptServer
+import sys
 import csv
 import hashlib
 from io import StringIO
@@ -207,8 +208,8 @@ class GroupInfo():
                 self.output_image_link = node.out(1) # [node_id, 1]
                 found_node = node
 
-        if output_image_node_id is None:
-            logging.error("S2V: Could not find output image node")
+        # if output_image_node_id is None:
+        #    logging.warning("S2V: Could not find output image node")
         return found_node
 
     @classmethod
@@ -531,6 +532,51 @@ class Spreadsheet2VideoFinalVideo(io.ComfyNode):
             output_audio
         )
 
+
+class Spreadsheet2VideoSequence(io.ComfyNode):
+    @classmethod
+    def define_schema(cls) -> io.Schema:
+        return io.Schema(
+            node_id="Spreadsheet2VideoSequence",
+            display_name="Spreadsheet2Video Sequence",
+            category="Spreadsheet2Video",
+            description="Make a sequence of numbers. Use with Spreadsheet2Video Multiply Spreadsheet to add to another spreadsheet ",
+            search_aliases=["spreadsheet", "loop", "multiply", "load", "column"],
+            inputs=[
+                io.Float.Input("start", default=0, min=-sys.maxsize, max=sys.maxsize,  tooltip="Start number"),
+                io.Float.Input("end",  default=10, min=-sys.maxsize, max=sys.maxsize,  tooltip='End "before" number.  Does not include this number.'),
+                io.Float.Input("step",  default=1, min=-sys.maxsize, max=sys.maxsize,  tooltip="Number to increase/decrease each step"),
+            ],
+            outputs=[
+                io.String.Output(),
+            ],
+        )
+
+    @classmethod
+    def execute(cls, start, end, step) -> io.NodeOutput:
+        n = start
+        if step == 0:
+            raise Exception(f"S2VSequence.  step must not be zero")
+        if step < 0 and not (start > end):
+            raise Exception(f"S2VSequence.  start must be more than end when step is going backwards(negative)")
+        if step > 0 and not (start < end):
+            raise Exception(f"S2VSequence.  start must be less than end when step is going forwards(positive)")
+
+        nums = ['sequence']
+        while True:
+            if step < 0:
+                if(n <= end):
+                    break
+            elif(n >= end):
+                break
+            nums.append(str(n))
+            n += step
+
+
+        return io.NodeOutput(
+            "\n".join(nums)
+            )
+
 class Spreadsheet2VideoMultiplySpreadsheet(io.ComfyNode):
     @classmethod
     def define_schema(cls) -> io.Schema:
@@ -595,7 +641,9 @@ class Spreadsheet2VideoLoadText(io.ComfyNode):
             if input_full_dir.is_dir():
                 input_short_dir = Path(input_dir)
                 for d in input_full_dir.iterdir():
-                    options.append(str(input_short_dir / d.name))
+                    full_path = input_full_dir / d.name
+                    if full_path.is_file():
+                        options.append(str(input_short_dir / d.name))
 
 
         # files = folder_paths.filter_files_content_types(files, ["text", "application"])
@@ -768,8 +816,8 @@ class Spreadsheet2VideoNode(io.ComfyNode):
                 link_to_input,
                 row
                 )
-            if not foundImageInput:
-                logging.warn(f"S2V: No image input node, ignore if this is a non image workflow, column1: {name}")
+            #if not foundImageInput:
+            #    logging.warn(f"S2V: No image input node, ignore if this is a non image workflow, column1: {name}")
 
 
 
