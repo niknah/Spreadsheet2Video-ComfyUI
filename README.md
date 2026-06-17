@@ -55,9 +55,10 @@ Using flux klein edit(to make new objects appear) + wan video.
 </div>
 
 
+
 * [Style Comparison workflow](example_workflows/Spreadsheet2Video_StyleChangeComparison.json)
 [(video)](https://youtu.be/XyKiLByXNaY)
-
+* [Facial expression comparison workflow](https://youtu.be/SaTUMTqsUow)
 
 ### Deforum-like videos example
 
