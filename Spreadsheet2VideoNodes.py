@@ -16,8 +16,10 @@ import logging
 import torch
 import torchaudio
 import re
+import os
 import time
 import datetime
+import glob
 import pandas as pd
 
 
@@ -198,13 +200,13 @@ class GroupInfo():
 
 
     def change_out_node(self, graph):
-        output_image_node_id = None
+        # output_image_node_id = None
         found_node = None
         for node_id in graph.nodes.keys():
             node = graph.nodes.get(node_id)
             if node.class_type == "Spreadsheet2VideoOutputImage":
                 node.class_type = "Spreadsheet2VideoProcessImage"
-                output_image_node_id = node_id
+                # output_image_node_id = node_id
                 self.output_image_link = node.out(1) # [node_id, 1]
                 found_node = node
 
@@ -541,7 +543,7 @@ class Spreadsheet2VideoSequence(io.ComfyNode):
             display_name="Spreadsheet2Video Sequence",
             category="Spreadsheet2Video",
             description="Make a sequence of numbers. Use with Spreadsheet2Video Multiply Spreadsheet to add to another spreadsheet ",
-            search_aliases=["spreadsheet", "loop", "multiply", "load", "column"],
+            search_aliases=["spreadsheet", "loop", "load", "column"],
             inputs=[
                 io.Float.Input("start", default=0, min=-sys.maxsize, max=sys.maxsize,  tooltip="Start number"),
                 io.Float.Input("end",  default=10, min=-sys.maxsize, max=sys.maxsize,  tooltip='End "before" number.  Does not include this number.'),
@@ -556,11 +558,11 @@ class Spreadsheet2VideoSequence(io.ComfyNode):
     def execute(cls, start, end, step) -> io.NodeOutput:
         n = start
         if step == 0:
-            raise Exception(f"S2VSequence.  step must not be zero")
+            raise Exception("S2VSequence.  step must not be zero")
         if step < 0 and not (start > end):
-            raise Exception(f"S2VSequence.  start must be more than end when step is going backwards(negative)")
+            raise Exception("S2VSequence.  start must be more than end when step is going backwards(negative)")
         if step > 0 and not (start < end):
-            raise Exception(f"S2VSequence.  start must be less than end when step is going forwards(positive)")
+            raise Exception("S2VSequence.  start must be less than end when step is going forwards(positive)")
 
         nums = ['sequence']
         while True:
@@ -576,6 +578,47 @@ class Spreadsheet2VideoSequence(io.ComfyNode):
         return io.NodeOutput(
             "\n".join(nums)
             )
+
+
+
+class Spreadsheet2VideoFilesList(io.ComfyNode):
+    @classmethod
+    def define_schema(cls) -> io.Schema:
+        return io.Schema(
+            node_id="Spreadsheet2VideoFilesList",
+            display_name="Spreadsheet2Video Files list",
+            category="Spreadsheet2Video",
+            description="Get a list of files",
+            search_aliases=["spreadsheet", "loop", "load", "files"],
+            inputs=[
+                io.String.Input("directory", default="input", tooltip="Directory. example: input, output"),
+                io.Boolean.Input("regex", default=False, tooltip="Regex(on) or glob(off)"),
+                io.String.Input("find", default="*", tooltip="Glob / Regex"),
+            ],
+            outputs=[
+                io.String.Output(),
+            ],
+        )
+
+    @classmethod
+    def execute(cls, directory, regex, find) -> io.NodeOutput:
+        found = []
+        if regex:
+            findRe = re.compile(find, re.IGNORECASE)
+            for dirpath, dirnames, filenames in os.walk(directory):
+                for filename in filenames:
+                    # Check if the regex pattern matches the filename
+                    file = str(Path(os.path.join(dirpath, filename)).relative_to(directory))
+                    if findRe.search(file):
+                        found.append( file )
+        else:
+            found = list(glob.iglob( str(Path(directory) / find), recursive=True))
+            found = [ str(Path(f).relative_to(directory)) for f in found ]
+
+        return io.NodeOutput(
+            "\n".join(['filename'] + found)
+            )
+
 
 class Spreadsheet2VideoMultiplySpreadsheet(io.ComfyNode):
     @classmethod
@@ -811,7 +854,8 @@ class Spreadsheet2VideoNode(io.ComfyNode):
                 )
             lastProcessImageNode = processImageNode
 
-            foundImageInput = group_info.link_to_new_input_node(
+            # foundImageInput =
+            group_info.link_to_new_input_node(
                 graph,
                 link_to_input,
                 row

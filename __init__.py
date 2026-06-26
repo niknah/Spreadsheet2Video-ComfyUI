@@ -9,6 +9,7 @@ from .Spreadsheet2VideoNodes import (
         Spreadsheet2VideoFinalVideo,
         Spreadsheet2VideoLoadText,
         Spreadsheet2VideoSequence,
+        Spreadsheet2VideoFilesList,
         Spreadsheet2VideoMultiplySpreadsheet
     )
 
@@ -38,6 +39,7 @@ class Spreadsheet2VideoExtension(ComfyExtension):
             Spreadsheet2VideoFinalVideo,
             Spreadsheet2VideoLoadText,
             Spreadsheet2VideoSequence,
+            Spreadsheet2VideoFilesList,
             Spreadsheet2VideoMultiplySpreadsheet,
         ]
 
