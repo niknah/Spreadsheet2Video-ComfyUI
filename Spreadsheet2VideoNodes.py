@@ -591,7 +591,7 @@ class Spreadsheet2VideoFilesList(io.ComfyNode):
             node_id="Spreadsheet2VideoFilesList",
             display_name="Spreadsheet2Video Files list",
             category="Spreadsheet2Video",
-            description="Get a list of files",
+            description="Get a list of files relative to the input folder",
             search_aliases=["spreadsheet", "loop", "load", "files"],
             inputs=[
                 io.String.Input("directory", default="input", tooltip="Directory. example: input, output"),
@@ -608,15 +608,18 @@ class Spreadsheet2VideoFilesList(io.ComfyNode):
         found = []
         if regex:
             findRe = re.compile(find, re.IGNORECASE)
-            for dirpath, dirnames, filenames in os.walk(directory):
+            for dirpath, dirnames, filenames in os.walk( directory):
                 for filename in filenames:
                     # Check if the regex pattern matches the filename
-                    file = str(Path(os.path.join(dirpath, filename)).relative_to(directory))
+                    file = Path(os.path.join(dirpath, filename))
                     if findRe.search(file):
                         found.append( file )
         else:
             found = list(glob.iglob( str(Path(directory) / find), recursive=True))
-            found = [ str(Path(f).relative_to(directory)) for f in found ]
+            found = [ Path(f) for f in found ]
+
+        input_folder = Path(folder_paths.get_input_directory())
+        found[:] = [ str(f.absolute().relative_to(input_folder)) for f in found]
 
         return io.NodeOutput(
             "\n".join(['filename'] + found)
