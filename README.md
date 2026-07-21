@@ -117,6 +117,7 @@ Using flux klein edit(to make new objects appear) + wan video.
 
 ## Changes
 
+* v1.0.4: Added sequence, file list nodes.
 * v1.0.3: Don't use the first image because some workflows may resize it by default.
 * v1.0.2: Added audio.  Removed the need for the output image node if we are not making a long video.
 * v1.0.1: Allow running of non-video workflows without using a blank image or video output.  Added multiply spreadsheet node.
