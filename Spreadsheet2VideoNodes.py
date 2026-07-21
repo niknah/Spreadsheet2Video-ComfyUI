@@ -410,12 +410,15 @@ class GroupInfo():
             input_type = input_types["optional"].get(key)
 
         if input_type is not None:
-            if(input_type[0] == "INT"):
-                val = int(val)
-            elif(input_type[0] == "FLOAT"):
-                val = float(val)
-            elif(input_type[0] == "BOOLEAN"):
-                val = val.lower().strip() in ("yes", "true", "t", "1")
+            try:
+                if(input_type[0] == "INT"):
+                    val = int(re.match(r"^\d+", val).group(0))  # convert float to int if needed
+                elif(input_type[0] == "FLOAT"):
+                    val = float(val)
+                elif(input_type[0] == "BOOLEAN"):
+                    val = val.lower().strip() in ("yes", "true", "t", "1")
+            except Exception as e:
+                raise ValueError(f"Bad value: {val} for type {input_type[0]}") from e
         return val
 
 
