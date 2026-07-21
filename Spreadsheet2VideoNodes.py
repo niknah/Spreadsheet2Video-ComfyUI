@@ -176,6 +176,18 @@ class Spreadsheet2VideoInputImage(io.ComfyNode):
             ],
             outputs=[
                 io.Image.Output(),
+#                io.String.Output("COLUMN2"),
+#                io.String.Output("COLUMN3"),
+#                io.String.Output("COLUMN4"),
+#                io.String.Output("COLUMN5"),
+#                io.String.Output("COLUMN6"),
+#                io.String.Output("COLUMN7"),
+#                io.String.Output("COLUMN8"),
+                # TODO: error.  Is there an "Any" type for output?
+# [ERROR] Failed to validate prompt for output 4:
+# [ERROR] * Text Overlay 21:
+# [ERROR]   - Exception when validating inner node: list index out of range
+# [ERROR] Output will be ignored
             ],
             hidden=[],
         )
