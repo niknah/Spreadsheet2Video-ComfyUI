@@ -18,3 +18,4 @@ Documentation = "https://niknah.github.com/Spreadsheet2Video-ComfyUI"
 [tool.comfy]
 PublisherId = "niknah"
 DisplayName = "Spreadsheet2Video"
+Icon = "https://raw.githubusercontent.com/niknah/Spreadsheet2Video-ComfyUI/refs/heads/main/Spreadsheet2Video_Logo.png"
