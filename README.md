@@ -117,6 +117,7 @@ Using flux klein edit(to make new objects appear) + wan video.
 
 ## Changes
 
+* v1.0.7: Reverted changes for errors/warnings when running. It wasn't working for KJ get/set nodes.
 * v1.0.6: Fix missing first image in video.  Remove checking errors/warnings when running.
 * v1.0.5: File list node now uses the input folder as source.  Don't crash when numbers in the columns are not correct.
 * v1.0.4: Added sequence, file list nodes.

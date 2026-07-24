@@ -223,8 +223,10 @@ class Spreadsheet2VideoInputImage(io.ComfyNode):
     def check_lazy_status(cls, COLUMN1=None):
         return []
 
+    # Disabled: If this is enabled the workflow will validate.
+    #    But it will run the original nodes that are not in any loop
     # Hacky fix for node not validating
-    RETURN_TYPES=("IMAGE","*","*","*","*","*","*","*","*","*","*","*","*","*","*")
+#    RETURN_TYPES=("IMAGE","*","*","*","*","*","*","*","*","*","*","*","*","*","*")
 
 
 class GroupInfo():
@@ -928,9 +930,11 @@ class Spreadsheet2VideoNode(io.ComfyNode):
             previous = lastProcessImageNode.out(0)
         )
 
-        for group_name in used_groups:
-            used_group = by_group_name[group_name]
-            used_group.replace_with_do_nothing(cls.hidden.prompt)
+#  Disabled:  If we make the original nodes that are not in the loop DoNothing
+#           If there are KJ get / set disconnected nodes.  The get nodes will return None instead of the value
+#        for group_name in used_groups:
+#            used_group = by_group_name[group_name]
+#            used_group.replace_with_do_nothing(cls.hidden.prompt)
 
         return io.NodeOutput(
             finalVideoNode.out(0),
