@@ -610,9 +610,9 @@ class Spreadsheet2VideoSequence(io.ComfyNode):
         if step == 0:
             raise Exception("S2VSequence.  step must not be zero")
         if step < 0 and not (start > end):
-            raise Exception("S2VSequence.  start must be more than end when step is going backwards(negative)")
+            raise Exception(f"S2VSequence.  start must be more than end when step is going backwards(negative).  {start} to {end}. Step:{step}")
         if step > 0 and not (start < end):
-            raise Exception("S2VSequence.  start must be less than end when step is going forwards(positive)")
+            raise Exception(f"S2VSequence.  start must be less than end when step is going forwards(positive).  {start} to {end}. Step:{step}")
 
         nums = ['sequence']
         while True:
@@ -874,7 +874,7 @@ class Spreadsheet2VideoNode(io.ComfyNode):
         rows_done = 0
         for row in reader:
             if(len(headerRow) < len(row)):
-                logging.warn(
+                logging.warning(
                     "S2V: csv header is not long enough for row: header:{}, row:{}, {}".format(
                     len(headerRow), len(row), " , ".join(row)
                 ))
@@ -915,9 +915,7 @@ class Spreadsheet2VideoNode(io.ComfyNode):
                 row
                 )
             #if not foundImageInput:
-            #    logging.warn(f"S2V: No image input node, ignore if this is a non image workflow, column1: {name}")
-
-
+            #    logging.warning(f"S2V: No image input node, ignore if this is a non image workflow, column1: {name}")
 
             previous_image_output = group_info.output_image_link
             rows_done += 1
