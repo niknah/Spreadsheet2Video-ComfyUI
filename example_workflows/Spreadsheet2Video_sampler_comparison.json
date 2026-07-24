@@ -1,8 +1,8 @@
 {
   "id": "35893262-c34f-4d3c-9c0b-da1b31fa8d0f",
   "revision": 0,
-  "last_node_id": 73,
-  "last_link_id": 80,
+  "last_node_id": 74,
+  "last_link_id": 82,
   "nodes": [
     {
       "id": 62,
@@ -13,7 +13,7 @@
       ],
       "size": [
         510,
-        600
+        788.40625
       ],
       "flags": {
         "collapsed": false
@@ -31,42 +31,6 @@
       "bgcolor": "#000"
     },
     {
-      "id": 67,
-      "type": "EmptyImage",
-      "pos": [
-        429.61458604717853,
-        -381.59845441504336
-      ],
-      "size": [
-        270,
-        130
-      ],
-      "flags": {},
-      "order": 1,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "IMAGE",
-          "type": "IMAGE",
-          "links": [
-            74
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.19.3",
-        "Node name for S&R": "EmptyImage"
-      },
-      "widgets_values": [
-        1024,
-        1024,
-        1,
-        0
-      ]
-    },
-    {
       "id": 68,
       "type": "PreviewImage",
       "pos": [
@@ -74,11 +38,11 @@
         -355.273637452495
       ],
       "size": [
-        140,
-        246
+        225,
+        675.953125
       ],
       "flags": {},
-      "order": 5,
+      "order": 3,
       "mode": 0,
       "inputs": [
         {
@@ -87,11 +51,17 @@
           "link": 75
         }
       ],
-      "outputs": [],
+      "outputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "links": null
+        }
+      ],
       "properties": {
+        "Node name for S&R": "PreviewImage",
         "cnr_id": "comfy-core",
-        "ver": "0.19.3",
-        "Node name for S&R": "PreviewImage"
+        "ver": "0.19.3"
       },
       "widgets_values": []
     },
@@ -99,28 +69,34 @@
       "id": 69,
       "type": "Spreadsheet2VideoOutputImage",
       "pos": [
-        1806.1506611808654,
-        -3.807339035899966
+        2018.1637313988413,
+        235.8719472681367
       ],
       "size": [
-        264.0162109375,
-        26
+        264,
+        95.765625
       ],
       "flags": {},
-      "order": 7,
+      "order": 6,
       "mode": 0,
       "inputs": [
         {
           "name": "images",
           "type": "IMAGE",
           "link": 80
+        },
+        {
+          "name": "audio",
+          "shape": 7,
+          "type": "AUDIO",
+          "link": null
         }
       ],
       "outputs": [],
       "properties": {
+        "Node name for S&R": "Spreadsheet2VideoOutputImage",
         "cnr_id": "Spreadsheet2Video-ComfyUI",
-        "ver": "8bd0eb2a97a28d13ffaa2b8483f1a3c22ee32103",
-        "Node name for S&R": "Spreadsheet2VideoOutputImage"
+        "ver": "8bd0eb2a97a28d13ffaa2b8483f1a3c22ee32103"
       },
       "widgets_values": []
     },
@@ -154,7 +130,7 @@
           "widget": {
             "name": "sampler_name"
           },
-          "link": 77
+          "link": 81
         }
       ],
       "outputs": [
@@ -218,77 +194,18 @@
       "widgets_values": []
     },
     {
-      "id": 70,
-      "type": "Spreadsheet2VideoInputImage",
-      "pos": [
-        392.8679556077614,
-        387.66967098104266
-      ],
-      "size": [
-        312.483984375,
-        158
-      ],
-      "flags": {},
-      "order": 2,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "IMAGE",
-          "type": "IMAGE",
-          "links": null
-        },
-        {
-          "name": "COLUMN2",
-          "type": null,
-          "links": [
-            77,
-            79
-          ]
-        },
-        {
-          "name": "COLUMN3",
-          "type": null,
-          "links": null
-        },
-        {
-          "name": "COLUMN4",
-          "type": null,
-          "links": null
-        },
-        {
-          "name": "COLUMN5",
-          "type": null,
-          "links": null
-        },
-        {
-          "name": "COLUMN6",
-          "type": null,
-          "links": null
-        }
-      ],
-      "properties": {
-        "cnr_id": "Spreadsheet2Video-ComfyUI",
-        "ver": "8bd0eb2a97a28d13ffaa2b8483f1a3c22ee32103",
-        "Node name for S&R": "Spreadsheet2VideoInputImage"
-      },
-      "widgets_values": [
-        "settingstest"
-      ]
-    },
-    {
       "id": 73,
       "type": "Text Overlay",
       "pos": [
-        1300.8864735203513,
-        180.03217692535213
+        1310.5232332207602,
+        383.54338539051116
       ],
       "size": [
         400,
-        352
+        503.734375
       ],
       "flags": {},
-      "order": 6,
+      "order": 5,
       "mode": 0,
       "inputs": [
         {
@@ -302,7 +219,7 @@
           "widget": {
             "name": "text"
           },
-          "link": 79
+          "link": 82
         }
       ],
       "outputs": [
@@ -315,9 +232,9 @@
         }
       ],
       "properties": {
+        "Node name for S&R": "Text Overlay",
         "cnr_id": "comfyui-textoverlay",
-        "ver": "1.0.1",
-        "Node name for S&R": "Text Overlay"
+        "ver": "1.0.1"
       },
       "widgets_values": [
         "Hello",
@@ -346,14 +263,14 @@
         200
       ],
       "flags": {},
-      "order": 3,
+      "order": 1,
       "mode": 0,
       "inputs": [
         {
           "name": "first_image",
           "shape": 7,
           "type": "IMAGE",
-          "link": 74
+          "link": null
         }
       ],
       "outputs": [
@@ -363,27 +280,81 @@
           "links": [
             75
           ]
+        },
+        {
+          "name": "AUDIO",
+          "type": "AUDIO",
+          "links": null
         }
       ],
       "properties": {
+        "Node name for S&R": "Spreadsheet2Video",
         "cnr_id": "Spreadsheet2Video-ComfyUI",
-        "ver": "8bd0eb2a97a28d13ffaa2b8483f1a3c22ee32103",
-        "Node name for S&R": "Spreadsheet2Video"
+        "ver": "8bd0eb2a97a28d13ffaa2b8483f1a3c22ee32103"
       },
       "widgets_values": [
-        "subworkflow,sampler\nsettingstest,euler\nsettingstest,euler_cfg_pp\nsettingstest,euler_ancestral\nsettingstest,euler_ancestral_cfg_pp\nsettingstest,heun\nsettingstest,heunpp2\nsettingstest,exp_heun_2_x0\nsettingstest,exp_heun_2_x0_sde\nsettingstest,dpm_2\nsettingstest,dpm_2_ancestral\nsettingstest,lms\nsettingstest,dpm_fast\nsettingstest,dpm_adaptive\nsettingstest,dpmpp_2s_ancestral\nsettingstest,dpmpp_2s_ancestral_cfg_pp\nsettingstest,dpmpp_sde\nsettingstest,dpmpp_sde_gpu\nsettingstest,dpmpp_2m\nsettingstest,dpmpp_2m_cfg_pp\nsettingstest,dpmpp_2m_sde\nsettingstest,dpmpp_2m_sde_gpu\nsettingstest,dpmpp_2m_sde_heun\nsettingstest,dpmpp_2m_sde_heun_gpu\nsettingstest,dpmpp_3m_sde\nsettingstest,dpmpp_3m_sde_gpu\nsettingstest,ddpm\nsettingstest,lcm\nsettingstest,ipndm\nsettingstest,ipndm_v\nsettingstest,deis\nsettingstest,res_multistep\nsettingstest,res_multistep_cfg_pp\nsettingstest,res_multistep_ancestral\nsettingstest,res_multistep_ancestral_cfg_pp\nsettingstest,gradient_estimation\nsettingstest,gradient_estimation_cfg_pp\nsettingstest,er_sde\nsettingstest,seeds_2\nsettingstest,seeds_3\nsettingstest,sa_solver\nsettingstest,sa_solver_pece\n"
+        "subworkflow,sampler\nsettingstest,euler\nsettingstest,euler_cfg_pp\nsettingstest,euler_ancestral\nsettingstest,euler_ancestral_cfg_pp\nsettingstest,heun\nsettingstest,heunpp2\nsettingstest,exp_heun_2_x0\nsettingstest,exp_heun_2_x0_sde\nsettingstest,dpm_2\nsettingstest,dpm_2_ancestral\nsettingstest,lms\nsettingstest,dpm_fast\nsettingstest,dpm_adaptive\nsettingstest,dpmpp_2s_ancestral\nsettingstest,dpmpp_2s_ancestral_cfg_pp\nsettingstest,dpmpp_sde\nsettingstest,dpmpp_sde_gpu\nsettingstest,dpmpp_2m\nsettingstest,dpmpp_2m_cfg_pp\nsettingstest,dpmpp_2m_sde\nsettingstest,dpmpp_2m_sde_gpu\nsettingstest,dpmpp_2m_sde_heun\nsettingstest,dpmpp_2m_sde_heun_gpu\nsettingstest,dpmpp_3m_sde\nsettingstest,dpmpp_3m_sde_gpu\nsettingstest,ddpm\nsettingstest,lcm\nsettingstest,ipndm\nsettingstest,ipndm_v\nsettingstest,deis\nsettingstest,res_multistep\nsettingstest,res_multistep_cfg_pp\nsettingstest,res_multistep_ancestral\nsettingstest,res_multistep_ancestral_cfg_pp\nsettingstest,gradient_estimation\nsettingstest,gradient_estimation_cfg_pp\nsettingstest,er_sde\nsettingstest,seeds_2\nsettingstest,seeds_3\nsettingstest,sa_solver\nsettingstest,sa_solver_pece"
+      ]
+    },
+    {
+      "id": 74,
+      "type": "Spreadsheet2VideoInputImage",
+      "pos": [
+        403.9941463055743,
+        402.9564909831682
+      ],
+      "size": [
+        312.375,
+        227.75
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": null
+        },
+        {
+          "name": "COLUMN2",
+          "type": null,
+          "links": [
+            81,
+            82
+          ]
+        },
+        {
+          "name": "COLUMN3",
+          "type": null,
+          "links": null
+        },
+        {
+          "name": "COLUMN4",
+          "type": null,
+          "links": null
+        },
+        {
+          "name": "COLUMN5",
+          "type": null,
+          "links": null
+        },
+        {
+          "name": "COLUMN6",
+          "type": null,
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Spreadsheet2VideoInputImage"
+      },
+      "widgets_values": [
+        "settingstest"
       ]
     }
   ],
   "links": [
-    [
-      74,
-      67,
-      0,
-      66,
-      0,
-      "IMAGE"
-    ],
     [
       75,
       66,
@@ -391,14 +362,6 @@
       68,
       0,
       "IMAGE"
-    ],
-    [
-      77,
-      70,
-      1,
-      64,
-      1,
-      "COMBO"
     ],
     [
       78,
@@ -409,20 +372,28 @@
       "IMAGE"
     ],
     [
-      79,
-      70,
-      1,
-      73,
-      1,
-      "STRING"
-    ],
-    [
       80,
       73,
       0,
       69,
       0,
       "IMAGE"
+    ],
+    [
+      81,
+      74,
+      1,
+      64,
+      1,
+      "COMBO"
+    ],
+    [
+      82,
+      74,
+      1,
+      73,
+      1,
+      "STRING"
     ]
   ],
   "groups": [],
@@ -433,8 +404,8 @@
         "version": 1,
         "state": {
           "lastGroupId": 4,
-          "lastNodeId": 73,
-          "lastLinkId": 80,
+          "lastNodeId": 74,
+          "lastLinkId": 82,
           "lastRerouteId": 0
         },
         "revision": 0,
@@ -445,8 +416,8 @@
           "bounding": [
             -80,
             425,
-            122.564453125,
-            200
+            130.564453125,
+            208
           ]
         },
         "outputNode": {
@@ -454,8 +425,8 @@
           "bounding": [
             1490,
             415,
-            120,
-            60
+            128,
+            68
           ]
         },
         "inputs": [
@@ -468,8 +439,8 @@
             ],
             "label": "prompt",
             "pos": [
-              22.564453125,
-              445
+              26.564453125,
+              449
             ]
           },
           {
@@ -480,8 +451,8 @@
               35
             ],
             "pos": [
-              22.564453125,
-              465
+              26.564453125,
+              469
             ]
           },
           {
@@ -492,8 +463,8 @@
               36
             ],
             "pos": [
-              22.564453125,
-              485
+              26.564453125,
+              489
             ]
           },
           {
@@ -504,8 +475,8 @@
               38
             ],
             "pos": [
-              22.564453125,
-              505
+              26.564453125,
+              509
             ]
           },
           {
@@ -516,8 +487,8 @@
               39
             ],
             "pos": [
-              22.564453125,
-              525
+              26.564453125,
+              529
             ]
           },
           {
@@ -528,8 +499,8 @@
               40
             ],
             "pos": [
-              22.564453125,
-              545
+              26.564453125,
+              549
             ]
           },
           {
@@ -540,8 +511,8 @@
               70
             ],
             "pos": [
-              22.564453125,
-              565
+              26.564453125,
+              569
             ]
           },
           {
@@ -552,8 +523,8 @@
               71
             ],
             "pos": [
-              22.564453125,
-              585
+              26.564453125,
+              589
             ]
           }
         ],
@@ -567,8 +538,8 @@
             ],
             "localized_name": "IMAGE",
             "pos": [
-              1510,
-              435
+              1514,
+              439
             ]
           }
         ],
@@ -583,7 +554,7 @@
             ],
             "size": [
               270,
-              106
+              163.765625
             ],
             "flags": {},
             "order": 7,
@@ -610,9 +581,9 @@
               }
             ],
             "properties": {
+              "Node name for S&R": "CLIPLoader",
               "cnr_id": "comfy-core",
               "ver": "0.3.73",
-              "Node name for S&R": "CLIPLoader",
               "models": [
                 {
                   "name": "qwen_3_4b.safetensors",
@@ -642,8 +613,8 @@
               620
             ],
             "size": [
-              204.134765625,
-              26
+              225,
+              71.765625
             ],
             "flags": {},
             "order": 8,
@@ -667,9 +638,9 @@
               }
             ],
             "properties": {
+              "Node name for S&R": "ConditioningZeroOut",
               "cnr_id": "comfy-core",
               "ver": "0.3.73",
-              "Node name for S&R": "ConditioningZeroOut",
               "enableTabs": false,
               "tabWidth": 65,
               "tabXOffset": 10,
@@ -688,8 +659,8 @@
               160
             ],
             "size": [
-              210,
-              46
+              225,
+              95.765625
             ],
             "flags": {},
             "order": 1,
@@ -720,9 +691,9 @@
               }
             ],
             "properties": {
+              "Node name for S&R": "VAEDecode",
               "cnr_id": "comfy-core",
               "ver": "0.3.64",
-              "Node name for S&R": "VAEDecode",
               "enableTabs": false,
               "tabWidth": 65,
               "tabXOffset": 10,
@@ -737,12 +708,12 @@
             "id": 28,
             "type": "UNETLoader",
             "pos": [
-              110,
-              200
+              95.50556061531336,
+              156.1450685567933
             ],
             "size": [
               270,
-              82
+              131.765625
             ],
             "flags": {},
             "order": 5,
@@ -769,9 +740,9 @@
               }
             ],
             "properties": {
+              "Node name for S&R": "UNETLoader",
               "cnr_id": "comfy-core",
               "ver": "0.3.73",
-              "Node name for S&R": "UNETLoader",
               "models": [
                 {
                   "name": "z_image_turbo_bf16.safetensors",
@@ -835,9 +806,9 @@
               }
             ],
             "properties": {
+              "Node name for S&R": "CLIPTextEncode",
               "cnr_id": "comfy-core",
               "ver": "0.3.73",
-              "Node name for S&R": "CLIPTextEncode",
               "enableTabs": false,
               "tabWidth": 65,
               "tabXOffset": 10,
@@ -859,7 +830,7 @@
             ],
             "size": [
               260,
-              110
+              167.765625
             ],
             "flags": {},
             "order": 3,
@@ -896,9 +867,9 @@
               }
             ],
             "properties": {
+              "Node name for S&R": "EmptySD3LatentImage",
               "cnr_id": "comfy-core",
               "ver": "0.3.64",
-              "Node name for S&R": "EmptySD3LatentImage",
               "enableTabs": false,
               "tabWidth": 65,
               "tabXOffset": 10,
@@ -922,7 +893,7 @@
             ],
             "size": [
               310,
-              60
+              103.765625
             ],
             "flags": {},
             "order": 2,
@@ -947,9 +918,9 @@
               }
             ],
             "properties": {
+              "Node name for S&R": "ModelSamplingAuraFlow",
               "cnr_id": "comfy-core",
               "ver": "0.3.64",
-              "Node name for S&R": "ModelSamplingAuraFlow",
               "enableTabs": false,
               "tabWidth": 65,
               "tabXOffset": 10,
@@ -971,7 +942,7 @@
             ],
             "size": [
               270,
-              58
+              103.765625
             ],
             "flags": {},
             "order": 6,
@@ -998,9 +969,9 @@
               }
             ],
             "properties": {
+              "Node name for S&R": "VAELoader",
               "cnr_id": "comfy-core",
               "ver": "0.3.73",
-              "Node name for S&R": "VAELoader",
               "models": [
                 {
                   "name": "ae.safetensors",
@@ -1029,7 +1000,7 @@
             ],
             "size": [
               315,
-              262
+              335.765625
             ],
             "flags": {},
             "order": 0,
@@ -1090,9 +1061,9 @@
               }
             ],
             "properties": {
+              "Node name for S&R": "KSampler",
               "cnr_id": "comfy-core",
               "ver": "0.3.64",
-              "Node name for S&R": "KSampler",
               "enableTabs": false,
               "tabWidth": 65,
               "tabXOffset": 10,
@@ -1102,7 +1073,7 @@
               "secondTabWidth": 65
             },
             "widgets_values": [
-              470744500130869,
+              206050514809042,
               "randomize",
               8,
               1,
@@ -1123,7 +1094,6 @@
               200
             ],
             "color": "#3f789e",
-            "font_size": 24,
             "flags": {}
           },
           {
@@ -1136,7 +1106,6 @@
               540
             ],
             "color": "#3f789e",
-            "font_size": 24,
             "flags": {}
           },
           {
@@ -1149,7 +1118,6 @@
               413.6
             ],
             "color": "#3f789e",
-            "font_size": 24,
             "flags": {}
           }
         ],
@@ -1308,13 +1276,13 @@
   "config": {},
   "extra": {
     "ds": {
-      "scale": 1.38578715050494,
+      "scale": 0.7303201844073122,
       "offset": [
-        -742.3937780088906,
-        456.7885694247487
+        -378.6366414096497,
+        207.50186253287825
       ]
     },
-    "frontendVersion": "1.42.11",
+    "frontendVersion": "1.45.20",
     "VHS_latentpreview": false,
     "VHS_latentpreviewrate": 0,
     "VHS_MetadataImage": true,
