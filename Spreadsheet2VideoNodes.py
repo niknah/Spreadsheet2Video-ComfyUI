@@ -659,7 +659,7 @@ class Spreadsheet2VideoFilesList(io.ComfyNode):
                 for filename in filenames:
                     # Check if the regex pattern matches the filename
                     file = Path(os.path.join(dirpath, filename))
-                    if findRe.search(file):
+                    if findRe.search(str(file)):
                         found.append( file )
         else:
             found = list(glob.iglob( str(Path(directory) / find), recursive=True))
