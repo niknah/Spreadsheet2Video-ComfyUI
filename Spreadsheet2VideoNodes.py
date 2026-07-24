@@ -134,6 +134,27 @@ class Spreadsheet2VideoProcessImage(io.ComfyNode):
         return str(random.random())
 
 
+# The original nodes are replaced with this one so they won't do anything.
+class Spreadsheet2VideoDoNothing(io.ComfyNode):
+    @classmethod
+    def define_schema(cls) -> io.Schema:
+        return io.Schema(
+            node_id="Spreadsheet2VideoDoNothing",
+            display_name="Internal S2V Do nothing",
+            description="internal node, ignore",
+            category="S2V Internal",
+            inputs=[
+            ],
+            outputs=[
+            ],
+            hidden=[],
+        )
+
+    @classmethod
+    def execute(cls, **kwargs) -> io.NodeOutput:
+        return io.NodeOutput()
+
+
 # Not executed
 class Spreadsheet2VideoOutputImage(io.ComfyNode):
     @classmethod
@@ -201,6 +222,9 @@ class Spreadsheet2VideoInputImage(io.ComfyNode):
     @classmethod
     def check_lazy_status(cls, COLUMN1=None):
         return []
+
+    # Hacky fix for node not validating
+    RETURN_TYPES=("IMAGE","*","*","*","*","*","*","*","*","*","*","*","*","*","*")
 
 
 class GroupInfo():
@@ -458,8 +482,12 @@ class GroupInfo():
                             if v[1] < len(row):
                                 node_inputs[k]= self.convert_new_node_input_value(node_class, k, row[v[1]])
                             else:
-                                logging.warn(f"S2V: not enough columns in row, column: {v[1]}, row: {','.join(row)}")
+                                logging.warning(f"S2V: not enough columns in row, column: {v[1]}, row: {','.join(row)}")
         return foundImageInput
+
+    def replace_with_do_nothing(self, prompt):
+        for remove_node_id in self.orig_node_ids.keys():
+            prompt[remove_node_id]['class_type']="Spreadsheet2VideoDoNothing"
 
 
 class Spreadsheet2VideoFinalVideo(io.ComfyNode):
@@ -827,7 +855,7 @@ class Spreadsheet2VideoNode(io.ComfyNode):
         f = StringIO(spreadsheet)
 
         by_group_name = GroupInfo.map_outputs(cls.hidden.prompt)
-
+        used_groups = {}
 
         reader = csv.reader(f, delimiter=',')
         headerRow = next(reader) # skip header
@@ -855,6 +883,7 @@ class Spreadsheet2VideoNode(io.ComfyNode):
                 continue
 
             group_info = by_group_name[name]
+            used_groups[name] = True
             group_info.copy_nodes(cls.hidden.prompt, graph)
             processImageNode = group_info.change_out_node(graph)
             if processImageNode is None:
@@ -893,6 +922,10 @@ class Spreadsheet2VideoNode(io.ComfyNode):
             "Spreadsheet2VideoFinalVideo",
             previous = lastProcessImageNode.out(0)
         )
+
+        for group_name in used_groups:
+            used_group = by_group_name[group_name]
+            used_group.replace_with_do_nothing(cls.hidden.prompt)
 
         return io.NodeOutput(
             finalVideoNode.out(0),
