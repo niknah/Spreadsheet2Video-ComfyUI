@@ -448,7 +448,7 @@ class GroupInfo():
         if input_type is not None:
             try:
                 if(input_type[0] == "INT"):
-                    val = int(re.match(r"^\d+", val).group(0))  # convert float to int if needed
+                    val = int(re.match(r"^-?\d+", val).group(0))  # convert float to int if needed
                 elif(input_type[0] == "FLOAT"):
                     val = float(val)
                 elif(input_type[0] == "BOOLEAN"):
