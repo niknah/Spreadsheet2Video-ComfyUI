@@ -513,9 +513,10 @@ class Spreadsheet2VideoFinalVideo(io.ComfyNode):
     def execute(cls, previous) -> io.NodeOutput:
         # TODO: ffmpeg to save memory?
         all_files = S2VComfy.get_all_files("v_")
+
         output_images = []
         # skip first image, it maybe a different size to the video
-        for file in all_files[1:]:
+        for file in all_files:
             image = Image.open(file)
 
             if image.mode == 'I':
@@ -524,12 +525,18 @@ class Spreadsheet2VideoFinalVideo(io.ComfyNode):
 
             image = np.array(image).astype(np.float32) / 255.0
             image = torch.from_numpy(image)[None,]
+
             output_images.append(image)
 
 
         errors = []
         if len(output_images) > 0:
             first_shape = output_images[0].shape
+            if len(output_images) > 1 and first_shape != output_images[1].shape:
+                # sometimes the first image from LoadImage is a different resolution as the process that makes the image that get send to S2VOutputImage node.
+                output_images = output_images[1:]
+                first_shape = output_images[0].shape
+
             nth = 0
             for output_image in output_images:
                 shape = output_image.shape
